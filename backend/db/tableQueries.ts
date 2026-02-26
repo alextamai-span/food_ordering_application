@@ -25,7 +25,7 @@ export const orderItemsTableQuery = `
     order_id INTEGER REFERENCES orders(id) ON DELETE CASCADE,
     food_item_id INTEGER REFERENCES food_items(id) NOT NULL,
     quantity INTEGER NOT NULL DEFAULT 1,
-    price DECIMAL(10, 2) NOT NULL
+    price_at_order DECIMAL(10, 2) NOT NULL
   );
 `;
 
