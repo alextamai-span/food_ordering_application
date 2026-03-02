@@ -4,6 +4,23 @@ import { Order } from '../models/orderModel.ts';
 
 // receive requests and respond to them
 export const EmpOrderController = {
+  // create order
+  async createOrderEmp(request: FastifyRequest, reply: FastifyReply) {
+    const service = EmpOrderService(request.server);
+    try {
+      const orderData = request.body as Order;
+      const createdOrder = await service.createOrderEmp(orderData);
+      return reply.status(201).send({
+        message: 'Order created successfully!',
+        data: createdOrder
+      });
+    }
+    catch (err: any) {
+      request.log.error(err);
+      return reply.status(500).send({ message: 'Failed to create order' });
+    }
+  },
+
   // update order
   async updateOrderEmp(request: FastifyRequest, reply: FastifyReply) {
     const service = EmpOrderService(request.server);

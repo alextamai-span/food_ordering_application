@@ -6,6 +6,7 @@ export default async function empOrderRoutes(fastify: FastifyInstance) {
   // run JWT validation before all routes in this plugin
   fastify.addHook('preHandler', verifyJWT);
   
+  fastify.post('/create', EmpOrderController.createOrderEmp);
   fastify.get('/list', EmpOrderController.listOrdersEmp);
   fastify.put('/update', EmpOrderController.updateOrderEmp);
   fastify.put('/delete', EmpOrderController.deleteOrderEmp);

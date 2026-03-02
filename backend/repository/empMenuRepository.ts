@@ -43,7 +43,7 @@ export const EmpMenuRepository = (fastify: FastifyInstance) => ({
         console.error('Failed to add menu item in the DB', error);
         throw new Error('Failed to add menu item in DB');
     }
-},
+  },
 
   // delete Menu
   async deleteMenuItemEmp(MenuId: number): Promise<boolean> {

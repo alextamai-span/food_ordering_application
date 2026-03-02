@@ -45,8 +45,8 @@ const startServer = async () => {
         fastify.get('/', async () => ({ status: 'online' }));
 
         // create routes
-        await fastify.register(registerRoutes, { prefix: '/register' });
-        await fastify.register(loginRoutes, { prefix: '/login' });
+        await fastify.register(registerRoutes);
+        await fastify.register(loginRoutes);
         await fastify.register(guestOrderRoutes, { prefix: '/guest/order' });
         await fastify.register(empOrderRoutes, { prefix: '/emp/order' });
         await fastify.register(guestMenuRoutes, { prefix: '/guest/menu' });

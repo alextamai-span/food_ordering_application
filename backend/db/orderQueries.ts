@@ -14,6 +14,12 @@ export const orderListQueryGuest = `
 
 // Employee order queries
 // ----------------------
+export const createOrderQueryEmp = `
+  INSERT INTO orders (guest_id, order_status, total_price)
+  VALUES ($1, $2, $3)
+  RETURNING *;
+`;
+
 export const updateOrderQueryEmp = `
   UPDATE orders
   SET guest_id = $1, status = $2, total_price = $3, completed_at = $4

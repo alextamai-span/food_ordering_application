@@ -9,9 +9,14 @@ export const RegisterService = (fastify: FastifyInstance) => {
     // create a new account
     async registerAccount(payload: any) {
       // hash password
-      const hashed = await hashPassword(payload.accountPassword);
+      const hashed = await hashPassword(payload.password);
       
-      return await repo.createAccount(payload.accountName, payload.accountEmail, hashed);
+      return {
+        success: true,
+        data: await repo.createAccount(
+          payload.name, payload.email, hashed, payload.account_type
+        )
+      };
     }
   };
 };

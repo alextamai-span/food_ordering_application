@@ -3,7 +3,7 @@
 export const listGuestMenuQuery = `
   SELECT name, price
   FROM menu_items
-  WHERE available = true AND account_type = $1
+  WHERE available = true
 ;`;
 
 // Employee menu queries
@@ -30,5 +30,4 @@ export const addMenuItemQueryEmp = `
 
 export const ListMenuQueryEmp = `
   SELECT * FROM menu_items
-  WHERE account_type = $1
 ;`;

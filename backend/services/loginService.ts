@@ -22,7 +22,8 @@ export const LoginService = (fastify: FastifyInstance) => {
 
       return { 
         id: account.id,
-        email: account.email 
+        email: account.email,
+        account_type: account.account_type,
       };
     }
   };

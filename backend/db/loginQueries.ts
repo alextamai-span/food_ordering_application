@@ -1,4 +1,4 @@
 export const accountLogin = `
-  SELECT * FROM accounts 
+  SELECT * FROM users 
   WHERE email = $1
 `;

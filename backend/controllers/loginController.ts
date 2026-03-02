@@ -8,8 +8,8 @@ export const LoginController = {
     const service = LoginService(request.server);
 
     try {
-      const { accountEmail, accountPassword } = request.body as any;
-      const account = await service.loginAccount(accountEmail, accountPassword);
+      const { email, password } = request.body as any;
+      const account = await service.loginAccount(email, password);
 
       // create JWT token with account id and email, expires in 15 minutes
       const token = request.server.jwt.sign(
@@ -25,6 +25,7 @@ export const LoginController = {
         message: 'Login successful',
         accountId: account.id,
         token: token,
+        account_type: account.account_type
       });
     }
     catch (err: any) {

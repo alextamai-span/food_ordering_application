@@ -6,6 +6,11 @@ export const EmpOrderService = (fastify: FastifyInstance) => {
   const repo = EmpOrderRepository(fastify);
 
   return {
+    // create order
+    async createOrderEmp(orderData: Order): Promise<Order> {
+      return await repo.createOrderEmp(orderData);
+    },
+
     // update order
     async updateOrderEmp(orderId: number, orderData: Order): Promise<Order> {
       return await repo.updateOrderEmp(orderId, orderData);
