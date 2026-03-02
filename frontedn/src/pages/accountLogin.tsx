@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../App.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useLoginValidation } from "../hooks/loginValidation";
 import { validateLogin } from "../services/accountService";
@@ -104,6 +104,9 @@ export default function AccountLogin() {
               type="submit"
               form="account-login-form"
             >Login</button>
+
+            <p>Do not have an account?   
+                <Link to="/register">Register here</Link></p>
         </main>
     </>
   );

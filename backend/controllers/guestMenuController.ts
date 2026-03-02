@@ -9,8 +9,7 @@ export const GuestMenuController = {
     const service = GuestMenuService(request.server);
 
     try {
-      const { account_type } = request.body as Pick<Account, 'account_type'>;
-      const rows = await service.getGuestMenu(account_type);
+      const rows = await service.getGuestMenu();
 
       return reply.status(200).send(rows);
     }

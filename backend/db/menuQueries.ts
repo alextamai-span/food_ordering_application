@@ -1,7 +1,7 @@
 // Guest menu queries
 // ------------------
 export const listGuestMenuQuery = `
-  SELECT name, price
+  SELECT item_name, price
   FROM menu_items
   WHERE available = true
 ;`;

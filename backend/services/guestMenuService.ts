@@ -8,8 +8,8 @@ export const GuestMenuService = (fastify: FastifyInstance) => {
 
   return {
     // listing all Menu
-    async getGuestMenu(account_type: string): Promise<Menu[]> {
-      return await repo.listGuestMenu(account_type);
+    async getGuestMenu(): Promise<Menu[]> {
+      return await repo.listGuestMenu();
     }
   };
 };

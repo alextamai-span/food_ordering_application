@@ -6,11 +6,10 @@ import { Account } from '../models/accountModel.ts';
 
 export const GuestMenuRepository = (fastify: FastifyInstance) => ({
   // listing all Menu
-  async listGuestMenu(account_type: string): Promise<Menu[]> {
+  async listGuestMenu(): Promise<Menu[]> {
     try {
       const { rows } = await fastify.pg.query(
         listGuestMenuQuery,
-        [account_type]
       );
       
       return rows;

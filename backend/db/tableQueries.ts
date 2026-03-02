@@ -25,14 +25,14 @@ export const orderItemsTableQuery = `
   CREATE TABLE IF NOT EXISTS order_items (
     id SERIAL PRIMARY KEY,
     order_id INTEGER REFERENCES orders(id) ON DELETE CASCADE,
-    food_item_id INTEGER REFERENCES food_items(id) NOT NULL,
+    food_item_id INTEGER REFERENCES menu_items(id) NOT NULL,
     quantity INTEGER NOT NULL DEFAULT 1,
     price_at_order DECIMAL(10, 2) NOT NULL
   );
 `;
 
 export const foodItemsTableQuery = `
-  CREATE TABLE IF NOT EXISTS food_items (
+  CREATE TABLE IF NOT EXISTS menu_items (
     id SERIAL PRIMARY KEY,
     item_name VARCHAR(255) NOT NULL UNIQUE,
     price DECIMAL(10, 2) NOT NULL,
