@@ -11,16 +11,16 @@ export const LoginService = (fastify: FastifyInstance) => {
       const account = await repo.findEmail(email);
 
       if (!account) {
-        throw new Error('Invalid email or password');
+        throw new Error('Invalid email');
       }
 
       // hash compare
       const isMatch = await comparePassword(pass, account.password);
       if (!isMatch) {
-        throw new Error('Invalid email or password');
+        throw new Error('Invalid password');
       }
 
-      return { 
+      return {
         id: account.id,
         email: account.email,
         account_type: account.account_type,

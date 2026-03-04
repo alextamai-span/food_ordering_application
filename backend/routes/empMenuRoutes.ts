@@ -10,6 +10,8 @@ export default async function empMenuRoutes(fastify: FastifyInstance) {
   fastify.get('/list', {
     schema: {
       description: 'Listing all the items for an employee',
+      "tags": ["emp"],
+      security: [{ bearerAuth: [] }],
       response: {
         200: {
           type: 'array',
@@ -46,16 +48,18 @@ export default async function empMenuRoutes(fastify: FastifyInstance) {
   fastify.post('/add_item', {
     schema: {
       description: 'Create a new menu item',
+      "tags": ["emp"],
+      security: [{ bearerAuth: [] }],
       body: {
         type: 'object',
         additionalProperties: false,
         properties: {
-          itemName: { type: 'string' },
+          item_name: { type: 'string' },
           price: { type: 'number', minimum: 0 },
           quantity: { type: 'integer', minimum: 1 },
           available: { type: 'boolean' }
         },
-        required: ['itemName', 'price', 'quantity', 'available']
+        required: ['item_name', 'price', 'quantity', 'available']
       },
       response: {
         201: {
@@ -84,20 +88,27 @@ export default async function empMenuRoutes(fastify: FastifyInstance) {
   }, EmpMenuController.addMenuItemEmp);
 
   // route for updating an item on the menu
-  fastify.put('/update_item', {
+  fastify.put('/update_item:itemId', {
     schema: {
       description: 'Updating an order',
+      "tags": ["emp"],
+      security: [{ bearerAuth: [] }],
+      params: {
+        type: 'object',
+        properties: {
+          itemId: { type: 'integer' }
+        },
+        required: ['itemId']
+      },
       body: {
         type: 'object',
         additionalProperties: false,
         properties: {
-          itemId: { type: 'integer' },
-          itemName: { type: 'string' },
+          item_name: { type: 'string' },
           price: { type: 'number', minimum: 0 },
           quantity: { type: 'integer', minimum: 1 },
           available: { type: 'boolean' }
         },
-        required: ['itemId']
       },
       response: {
         201: {
@@ -126,16 +137,17 @@ export default async function empMenuRoutes(fastify: FastifyInstance) {
   }, EmpMenuController.updateMenuItemEmp);
 
   // route for deleting an item on the menu
-fastify.put('/delete_item', {
+fastify.put('/delete_item:itemId', {
   schema: {
       description: 'Delete item',
-      body: {
+      "tags": ["emp"],
+      security: [{ bearerAuth: [] }],
+      params: {
         type: 'object',
-        additionalProperties: false,
         properties: {
-          itemId: { type: 'integer' },
+          itemId: { type: 'integer' }
         },
-        required: ['itemId'],
+        required: ['itemId']
       },
       response: {
         201: {
@@ -161,5 +173,5 @@ fastify.put('/delete_item', {
         }
       }
     }
-}, EmpMenuController.deleteMenuItemEmp);
+  }, EmpMenuController.deleteMenuItemEmp);
 };

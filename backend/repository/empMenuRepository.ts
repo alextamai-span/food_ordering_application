@@ -17,6 +17,11 @@ export const EmpMenuRepository = (fastify: FastifyInstance) => ({
           MenuId
         ]
       );
+
+      if (!rows.length) {
+        throw new Error(`Menu item with id ${MenuId} not found`);
+      }
+
       return rows[0];
     }
     catch (error) {
@@ -28,20 +33,27 @@ export const EmpMenuRepository = (fastify: FastifyInstance) => ({
   // add menu item
   async addMenuItemEmp(MenuData: Menu): Promise<Menu> {
     try {
-        const { rows } = await fastify.pg.query(
-            addMenuItemQueryEmp,
-            [
-                MenuData.item_name,
-                MenuData.price,
-                MenuData.quantity,
-                MenuData.available
-            ]
-        );
-        return rows[0];
+      const { rows } = await fastify.pg.query(
+        addMenuItemQueryEmp,
+        [
+          MenuData.item_name,
+          MenuData.price,
+          MenuData.quantity,
+          MenuData.available
+        ]
+      );
+
+      return rows[0];
     }
     catch (error) {
-        console.error('Failed to add menu item in the DB', error);
-        throw new Error('Failed to add menu item in DB');
+      // Log full error information (code/detail) then rethrow original error
+      console.error('Failed to add menu item in the DB', {
+        message: (error as any)?.message,
+        code: (error as any)?.code,
+        detail: (error as any)?.detail,
+        hint: (error as any)?.hint
+      });
+      throw error;
     }
   },
 
@@ -61,11 +73,10 @@ export const EmpMenuRepository = (fastify: FastifyInstance) => ({
   },
 
   // listing all Menu
-  async listAllMenuEmp(accountType: string): Promise<Menu[]> {
+  async listAllMenuEmp(): Promise<Menu[]> {
     try {
       const { rows } = await fastify.pg.query(
-        ListMenuQueryEmp,
-        [accountType]
+        ListMenuQueryEmp
       );
       
       return rows;

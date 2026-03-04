@@ -17,14 +17,14 @@ export const updateMenuItemQueryEmp = `
 
 export const deleteMenuItemQueryEmp = `
   UPDATE menu_items
-  SET available = false
+  SET price = 0.00, quantity = 0, available = false, is_deleted = true
   WHERE id = $1
   RETURNING *
 ;`;
 
 export const addMenuItemQueryEmp = `
-  INSERT INTO menu_items (item_name, price, quantity, available, account_type)
-    VALUES ($1, $2, $3, $4, $5)
+  INSERT INTO menu_items (item_name, price, quantity, available)
+    VALUES ($1, $2, $3, $4)
     RETURNING *
 ;`;
 

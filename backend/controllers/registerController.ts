@@ -1,5 +1,6 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { RegisterService } from '../services/registerService.ts';
+import colors from 'console-log-colors'
 
 // receive requests and respond to them
 export const RegisterController = {
@@ -11,9 +12,20 @@ export const RegisterController = {
       const accountData = request.body as any;
       const newAccount = await service.registerAccount(accountData);
 
+      // create JWT token with account id and email, expires in 15 minutes
+      const token = request.server.jwt.sign(
+        { 
+          id: newAccount.data.id,
+          email: newAccount.data.email
+        },
+        { expiresIn: '15m' }
+      );
+      
       return reply.status(201).send({
-        message: 'Account created successfully!',
-        data: newAccount
+        message: 'Account created successful',
+        accountId: newAccount.data.id,
+        token: token,
+        account_type: newAccount.data.account_type
       });
     }
     catch (err: any) {

@@ -9,7 +9,7 @@ export const addOrderQueryGuest = `
 export const orderListQueryGuest = `
   SELECT id, total_price, order_status
   FROM orders
-  WHERE customer_id = $1;
+  WHERE guest_id = $1;
 `;
 
 // Employee order queries

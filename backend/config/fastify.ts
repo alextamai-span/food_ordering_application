@@ -18,6 +18,16 @@ export const buildFastify = () => {
         version: '1.0.0',
       },
       servers: [{ url: `http://localhost:${env.PORT}` }],
+      components: {
+        securitySchemes: {
+          bearerAuth: {
+            type: 'http',
+            scheme: 'bearer',
+            bearerFormat: 'JWT',
+            description: 'JWT token from /login endpoint',
+          },
+        },
+      },
     },
   });
 
@@ -43,9 +53,8 @@ export const buildFastify = () => {
   // JWT config
   fastify.register(fastifyJwt, {
     secret: env.JWT_SECRET,
-    cookie: {
-      cookieName: 'access_token',
-      signed: false,
+    sign: {
+      expiresIn: '15m',
     },
   });
 

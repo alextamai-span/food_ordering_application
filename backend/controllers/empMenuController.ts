@@ -2,6 +2,7 @@ import { FastifyRequest, FastifyReply } from 'fastify';
 import { EmpMenuService } from '../services/empMenuService.ts';
 import { Menu } from '../models/MenuModel.ts';
 import { Account } from '../models/accountModel.ts';
+import colors from 'console-log-colors'
 
 // receive requests and respond to them
 export const EmpMenuController = {
@@ -10,10 +11,14 @@ export const EmpMenuController = {
     const service = EmpMenuService(request.server);
 
     try {
-      const { MenuId } = request.query as { MenuId: any};
-      const MenuData = request.body as Menu;
+      const { itemId } = request.params as { itemId: number };
 
-      const updatedMenu = await service.updateMenuItemEmp(MenuId, MenuData);
+      if (!itemId) {
+        return reply.status(400).send({ message: 'itemId is required' });
+      }
+
+      const MenuData = request.body as Menu;
+      const updatedMenu = await service.updateMenuItemEmp(itemId, MenuData);
 
       return reply.status(200).send({
         message: 'Menu updated successfully!',
@@ -33,10 +38,11 @@ export const EmpMenuController = {
     try {
       const menuItemData = request.body as any;
       const newMenuItem = await service.addMenuItemEmp(menuItemData);
-        return reply.status(201).send({
-            message: 'Menu item added successfully!',
-            data: newMenuItem
-        });
+
+      return reply.status(201).send({
+        message: 'Menu item added successfully!',
+        data: newMenuItem
+      });
     }
     catch (err: any) {
         request.log.error(err);
@@ -49,8 +55,7 @@ export const EmpMenuController = {
     const service = EmpMenuService(request.server);
 
     try {
-      const { account_type } = request.body as Pick<Account, 'account_type'>;
-      const rows = await service.getAllMenuEmp(account_type);
+      const rows = await service.getAllMenuEmp();
       return reply.status(200).send(rows);
     }
     catch (err: any) {
@@ -64,8 +69,13 @@ export const EmpMenuController = {
     const service = EmpMenuService(request.server);
   
     try {
-      const { MenuId } = request.query as { MenuId?: any };
-      const deleted = await service.deleteMenuItemEmp(MenuId);
+      const { itemId } = request.params as { itemId: number };
+
+      if (!itemId) {
+        return reply.status(400).send({ message: 'itemId is required' });
+      }
+
+      const deleted = await service.deleteMenuItemEmp(itemId);
 
       if (!deleted) {
         return reply.status(404).send({ message: 'Menu not found' });

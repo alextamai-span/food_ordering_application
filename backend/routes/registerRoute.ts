@@ -22,7 +22,7 @@ export default async function registerRoutes(fastify: FastifyInstance) {
                     type: 'object',
                     description: 'User registered successfully',
                     properties: {
-                        message: { type: 'string' },
+                        token: { type: 'string' },
                     },
                 },
                 400: {

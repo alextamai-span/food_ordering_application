@@ -10,6 +10,8 @@ export default async function empOrderRoutes(fastify: FastifyInstance) {
   fastify.post('/new_order', {
     schema: {
       description: 'Create a new order for an employee',
+      "tags": ["emp"],
+      security: [{ bearerAuth: [] }],
       body: {
         type: 'object',
         additionalProperties: false,
@@ -60,6 +62,8 @@ export default async function empOrderRoutes(fastify: FastifyInstance) {
   fastify.get('/list', {
     schema: {
       description: 'List all orders for an employee',
+      "tags": ["emp"],
+      security: [{ bearerAuth: [] }],
       response: {
         200: {
           type: 'array',
@@ -94,18 +98,26 @@ export default async function empOrderRoutes(fastify: FastifyInstance) {
   }, EmpOrderController.listOrdersEmp);
 
   // route for updating an order
-  fastify.put('/update_order', {
+  fastify.put('/update_order:orderId', {
     schema: {
       description: 'Updating an order',
+      "tags": ["emp"],
+      security: [{ bearerAuth: [] }],
+      params: {
+        type: 'object',
+        properties: {
+          orderId: { type: 'integer' }
+        },
+        required: ['orderId']
+      },
       body: {
         type: 'object',
         additionalProperties: false,
         properties: {
-          orderId: { type: 'integer' },
           orderStatus: { type: 'string' },
           completed_at: { type: 'string', format: 'date-time' },
         },
-        required: ['orderId', 'orderStatus'],
+        required: ['orderStatus'],
       },
       response: {
         201: {
@@ -134,16 +146,17 @@ export default async function empOrderRoutes(fastify: FastifyInstance) {
   }, EmpOrderController.updateOrderEmp);
 
   // route for soft deleting an order
-  fastify.put('/delete_order', {
+  fastify.put('/delete_order:orderId', {
     schema: {
       description: 'Delete order',
-      body: {
+      "tags": ["emp"],
+      security: [{ bearerAuth: [] }],
+      params: {
         type: 'object',
-        additionalProperties: false,
         properties: {
-          orderId: { type: 'integer' },
+          orderId: { type: 'integer' }
         },
-        required: ['orderId'],
+        required: ['orderId']
       },
       response: {
         201: {

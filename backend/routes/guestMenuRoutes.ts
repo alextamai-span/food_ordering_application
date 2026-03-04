@@ -9,16 +9,18 @@ export default async function guestMenuRoutes(fastify: FastifyInstance) {
   fastify.get('/list', {
     schema: {
       description: 'Get the list of available food items for guests',
+      "tags": ["guest"],
+      security: [{ bearerAuth: [] }],
       response: {
         200: {
           type: 'array',
           items: {
             type: 'object',
             properties: {
-              item: { type: 'string' },
+              item_name: { type: 'string' },
               price: { type: 'number', minimum: 0 },
             },
-            required: ['item', 'price']
+            required: ['item_name', 'price']
           },
         },
         401: {

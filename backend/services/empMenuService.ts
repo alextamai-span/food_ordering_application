@@ -22,8 +22,8 @@ export const EmpMenuService = (fastify: FastifyInstance) => {
     },
 
     // listing all Menus
-    async getAllMenuEmp(accountType: string): Promise<Menu[]> {
-      return await repo.listAllMenuEmp(accountType);
+    async getAllMenuEmp(): Promise<Menu[]> {
+      return await repo.listAllMenuEmp();
     }
   };
 };

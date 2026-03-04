@@ -34,7 +34,6 @@ export default async function loginRoutes(fastify: FastifyInstance) {
             type: 'object',
             description: 'Successful login',
             properties: {
-              message: { type: 'string' },
               token: { type: 'string' },
             },
           },

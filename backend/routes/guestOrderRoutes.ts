@@ -7,9 +7,18 @@ export default async function guestOrderRoutes(fastify: FastifyInstance) {
   fastify.addHook('preHandler', verifyJWT);
   
   // route for a guest to place a new order
-  fastify.post('/new_order', {
+  fastify.post('/new_order:userId', {
     schema: {
       description: 'Place a new order for a guest',
+      "tags": ["guest"],
+      security: [{ bearerAuth: [] }],
+      params: {
+        type: 'object',
+        properties: {
+          userId: { type: 'integer' }
+        },
+        required: ['userId']
+      },
       body: {
         type: 'object',
         additionalProperties: false,
@@ -57,9 +66,18 @@ export default async function guestOrderRoutes(fastify: FastifyInstance) {
   }, GuestOrderController.addOrder);
 
   // route for a guest to list all their orders
-  fastify.get('/list', {
+  fastify.get('/list:userId', {
     schema: {
       description: 'List all guest orders',
+      "tags": ["guest"],
+      security: [{ bearerAuth: [] }],
+      params: {
+        type: 'object',
+        properties: {
+          userId: { type: 'integer' }
+        },
+        required: ['userId']
+      },
       response: {
         200: {
         type: 'array',
