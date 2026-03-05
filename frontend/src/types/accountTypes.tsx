@@ -9,5 +9,6 @@ export interface AccountFormData {
 export interface ServiceResponse {
     success: boolean;
     message: string;
+    token?: string;
     data?: any;
 }

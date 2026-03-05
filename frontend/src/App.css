@@ -236,6 +236,20 @@ th {
   color: red;
 }
 
+/* Radio Buttons */ 
+.radio-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.radio-group input[type="radio"] {
+  accent-color: #4f46e5;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
 /* Icons */
 .action-icon, .edit-btn img, .delete-btn img {
   object-fit: contain;

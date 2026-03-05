@@ -1,5 +1,7 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { LoginService } from '../services/loginService.ts';
+import fastifyJwt from '@fastify/jwt';
+import colors from 'console-log-colors'
 
 // receive requests and respond to them
 export const LoginController = {

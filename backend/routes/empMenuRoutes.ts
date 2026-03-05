@@ -18,7 +18,7 @@ export default async function empMenuRoutes(fastify: FastifyInstance) {
           items: {
             type: 'object',
             properties: {
-              itemId: { type: 'integer' },
+              id: { type: 'number' },
               item_name: { type: 'string' },
               price: { type: 'number', minimum: 0 },
               quantity: { type: 'integer', minimum: 1 },

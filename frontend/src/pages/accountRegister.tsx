@@ -4,9 +4,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useRegisterValidation } from "../hooks/registerValidation";
 import { saveNewAccount } from "../services/accountService";
+import { useAuth } from "../hooks/useAuth";
 
 export default function AccountRegister() {
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   // Form state
   const [formData, setFormData] = useState({
@@ -40,7 +42,14 @@ export default function AccountRegister() {
 
             if (result.success) {
                 toast.success("Account created successfully!");
-                if(result.data === "employer") {
+                
+                // Store in Redux
+                login(
+                  result.token || '',
+                  result.data || ''
+                );
+
+                if(result.data === "employee") {
                     navigate("/emp/menu");
                 }
                 else {
@@ -90,7 +99,7 @@ export default function AccountRegister() {
                 <div className="form-input">
                     <label htmlFor="email">Email   </label>
                     <input
-                        type="email"
+                        type="text"
                         id="email"
                         name="email"
                         value={formData.email}
@@ -121,7 +130,7 @@ export default function AccountRegister() {
                     >
                       <option value="">Select Account Type</option>
                       <option value="guest">Guest</option>
-                      <option value="employer">Employee</option>
+                      <option value="employee">Employee</option>
                     </select>
                 </div>
                 { errors.account_type && <p className="form-invalid">{errors.account_type}</p> }

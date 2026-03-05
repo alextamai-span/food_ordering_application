@@ -9,16 +9,21 @@ export const useRegisterValidation = (
     let hasError = false;
 
     // Company Name validation
+    const nameRegex = /^[A-Za-z\s'-]+$/;
     if (!data.name.trim()) {
         newErrors.name = "Name is required.";
         hasError = true;
     }
     else if (data.name.length < 2 || data.name.length > 50) {
-        newErrors.name = 'Name must be 2-50 characters long.';
+        newErrors.name = "Name must be 2-50 characters long.";
+        hasError = true;
+    }
+    else if (!nameRegex.test(data.name)) {
+        newErrors.name = "Name can only contain letters, spaces, hyphens, and apostrophes.";
         hasError = true;
     }
     else {
-        newErrors.name = '';
+        newErrors.name = "";
     }
 
 
@@ -56,8 +61,8 @@ export const useRegisterValidation = (
         newErrors.account_type = 'Account Type is required.';
         hasError = true;
     }
-    else if (data.account_type !== 'guest' && data.account_type !== 'employer') {
-        newErrors.account_type = 'Account Type must be either "guest" or "employer".';
+    else if (data.account_type !== 'guest' && data.account_type !== 'employee') {
+        newErrors.account_type = 'Account Type must be either "guest" or "employee".';
         hasError = true;
     }
     else {

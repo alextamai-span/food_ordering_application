@@ -23,6 +23,9 @@ export default async function registerRoutes(fastify: FastifyInstance) {
                     description: 'User registered successfully',
                     properties: {
                         token: { type: 'string' },
+                        message: { type: 'string' },
+                        accountId: { type: 'integer' },
+                        account_type: { type: 'string' }
                     },
                 },
                 400: {
@@ -31,6 +34,14 @@ export default async function registerRoutes(fastify: FastifyInstance) {
                     properties: {
                         message: { type: 'string' },
                     },
+                },
+                409: {
+                    type: 'object',
+                    description: 'User already exists',
+                    properties: {
+                        success: { type: 'boolean' },
+                        message: { type: 'string' }
+                    }
                 },
                 500: {
                     type: 'object',

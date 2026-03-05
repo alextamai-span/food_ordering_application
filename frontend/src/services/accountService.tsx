@@ -13,22 +13,32 @@ export const saveNewAccount = async (
     });
 
     if (!response.ok) {
-      throw new Error('Failed to add new guest account.');
+      if (response.status === 409) {
+        return { success: false, message: "User already exists" };
+      }
+
+      if (response.status === 400) {
+        return { success: false, message: "Invalid input data" };
+      }
+
+      return { success: false, message: "Server error" };
     }
 
     // get result from the response
     const result = await response.json();
+
     return {
       success: true,
       message: result.message || "Account created successfully!",
-      data: result.data,
+      token: result.token,
+      data: result.account_type,
     };
   }
   catch (error) {
     console.error("Error saving account:", error);
     return { 
       success: false, 
-      message: "Network error or server unreachable."
+      message: "Something wrong. Please try again."
     };
   }
 };
@@ -51,9 +61,11 @@ export const validateLogin = async (
 
     // get result from the response
     const result = await response.json();
+
     return {
       success: true,
-      message: result.message || "Login successful!",
+      message: result.message,
+      token: result.token,
       data: result.account_type,
     };
   }

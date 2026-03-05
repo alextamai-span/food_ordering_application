@@ -4,22 +4,20 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useLoginValidation } from "../hooks/loginValidation";
 import { validateLogin } from "../services/accountService";
+import { useAuth } from "../hooks/useAuth";
 
 export default function AccountLogin() {
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   // Form state
   const [formData, setFormData] = useState({
-    name: "",
     email: "",
     password: "",
-    account_type: "",
   });
   const [errors, setErrors] = useState({
-    name: "",
     email: "",
     password: "",
-    account_type: "",
   });
 
   // Validation check
@@ -37,10 +35,17 @@ export default function AccountLogin() {
     else {
         try {
             const result = await validateLogin(formData);
+
             if (result.success) {
                 toast.success("Login successful!");
 
-                if(result.data === "employer") {
+                // Store in Redux
+                login(
+                  result.token || '',
+                  result.data || ''
+                );
+
+                if(result.data === "employee") {
                     navigate("/emp/menu");
                 }
                 else {
@@ -49,10 +54,8 @@ export default function AccountLogin() {
 
                 // reset form data
                 setFormData({
-                    name: "",
                     email: "",
                     password: "",
-                    account_type: "",
                 });
             }
             else {

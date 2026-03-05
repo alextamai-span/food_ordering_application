@@ -1,5 +1,6 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { RegisterService } from '../services/registerService.ts';
+import fastifyJwt from '@fastify/jwt';
 import colors from 'console-log-colors'
 
 // receive requests and respond to them
@@ -11,6 +12,13 @@ export const RegisterController = {
     try {
       const accountData = request.body as any;
       const newAccount = await service.registerAccount(accountData);
+
+      console.log(colors.red('new account'), newAccount)
+
+      // Check if registration failed
+      if (!newAccount.success || !newAccount.data) {
+        return reply.status(409).send({ message: newAccount.message });
+      }
 
       // create JWT token with account id and email, expires in 15 minutes
       const token = request.server.jwt.sign(
@@ -30,7 +38,7 @@ export const RegisterController = {
     }
     catch (err: any) {
       request.log.error(err);
-      return reply.status(500).send({ message: 'Failed to create account' });
+      return reply.status(400).send({ message: 'Failed to create account' });
     }
   }
 };

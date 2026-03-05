@@ -6,8 +6,11 @@ export default function GuestMenu() {
         <>
             <header>
                 <h1>Welcome to the Food Ordering Application</h1>
-                <h3>Guest Menu</h3>
             </header>
+
+            <main>
+                <h3>Guest Menu</h3>
+            </main>
         </>
     );
 }

@@ -35,6 +35,9 @@ export default async function loginRoutes(fastify: FastifyInstance) {
             description: 'Successful login',
             properties: {
               token: { type: 'string' },
+              message: { type: 'string' },
+              accountId: { type: 'integer' },
+              account_type: { type: 'string' }
             },
           },
           // 400 - bad request: invalid input
