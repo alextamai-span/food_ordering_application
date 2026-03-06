@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../App.css";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -9,6 +9,7 @@ import { useAuth } from "../hooks/useAuth";
 export default function AccountLogin() {
   const navigate = useNavigate();
   const { login } = useAuth();
+  const [hasSubmitted, setHasSubmitted] = useState(false);
 
   // Form state
   const [formData, setFormData] = useState({
@@ -23,9 +24,18 @@ export default function AccountLogin() {
   // Validation check
   const { validateLoginForm } = useLoginValidation(formData, setErrors);
 
+  // Auto-validate after first submit when user edits fields
+  useEffect(() => {
+    if (hasSubmitted) {
+      validateLoginForm();
+    }
+  }, [formData, hasSubmitted, validateLoginForm]);
+
+
   // Handle form submission
   const handleAccountLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setHasSubmitted(true);
 
     const hasErrors = validateLoginForm();
     if (hasErrors) {
@@ -58,6 +68,11 @@ export default function AccountLogin() {
                     email: "",
                     password: "",
                 });
+                setErrors({
+                    email: "",
+                    password: "",
+                });
+                setHasSubmitted(false);
             }
             else {
                 toast.error(result.message || "Failed to login.");

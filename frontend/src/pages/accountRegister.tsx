@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../App.css";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -9,6 +9,7 @@ import { useAuth } from "../hooks/useAuth";
 export default function AccountRegister() {
   const navigate = useNavigate();
   const { login } = useAuth();
+  const [hasSubmitted, setHasSubmitted] = useState(false);
 
   // Form state
   const [formData, setFormData] = useState({
@@ -28,22 +29,16 @@ export default function AccountRegister() {
   const { validateRegisterForm } = useRegisterValidation(formData, setErrors);
 
   // handle input change
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-
-    // Update form data
-    setFormData((prev) => ({
-        ...prev,
-        [name]: value,
-    }));
-
-    // Validate the field immediately
-    validateRegisterForm();
-  };
-
+  useEffect(() => {
+    if (hasSubmitted) {
+      validateRegisterForm();
+    }
+  }, [formData, hasSubmitted, validateRegisterForm]);
+  
   // Handle form submission
   const handleAccountRegister = async (e: React.FormEvent) => {
     e.preventDefault();
+    setHasSubmitted(true);
 
     const hasErrors = validateRegisterForm();
     if (hasErrors) {
@@ -78,6 +73,7 @@ export default function AccountRegister() {
                     password: "",
                     account_type: "",
                 });
+                setHasSubmitted(false);
             }
             else {
                 toast.error(result.message || "Failed to create account.");
@@ -106,7 +102,7 @@ export default function AccountRegister() {
                         id="name"
                         name="name"
                         value={formData.name}
-                        onChange={handleInputChange}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     />
                 </div>
                 { errors.name && <p className="form-invalid">{errors.name}</p> }
@@ -118,7 +114,7 @@ export default function AccountRegister() {
                         id="email"
                         name="email"
                         value={formData.email}
-                        onChange={handleInputChange}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     />
                 </div>
                 { errors.email && <p className="form-invalid">{errors.email}</p> }
@@ -130,7 +126,7 @@ export default function AccountRegister() {
                         id="password"
                         name="password"
                         value={formData.password}
-                        onChange={handleInputChange}
+                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                     />
                 </div>
                 { errors.password && <p className="form-invalid">{errors.password}</p> }
@@ -141,7 +137,7 @@ export default function AccountRegister() {
                         id="account_type"
                         name="account_type"
                         value={formData.account_type}
-                        onChange={handleInputChange}
+                        onChange={(e) => setFormData({ ...formData, account_type: e.target.value })}
                     >
                       <option value="">Select Account Type</option>
                       <option value="guest">Guest</option>

@@ -227,9 +227,9 @@ export default function Cart() {
                             <input
                                 type="number"
                                 id="quantity"
-                                min="1"
+                                min="0"
                                 value={newQuantity}
-                                onChange={(e) => setNewQuantity(parseInt(e.target.value) || 1)}
+                                onChange={(e) => setNewQuantity(parseInt(e.target.value) || 0)}
                             />
                         </div>
 

@@ -92,7 +92,7 @@ export default function EmpMenu() {
                                 <tr key={order.id || `order-${index}`}>
                                     <td>{order.user_id}</td>
                                     <td>${order.total_price.toFixed(2)}</td>
-                                    <td>{order.order_status}</td>
+                                    <td><strong>{order.order_status}</strong></td>
                                     <td>{new Date(order.created_at).toLocaleString()}</td>
                                     <td>{order.completed_at ? new Date(order.completed_at).toLocaleString() : 'Pending'}</td>
                                     <td>
