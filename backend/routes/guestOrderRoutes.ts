@@ -23,20 +23,11 @@ export default async function guestOrderRoutes(fastify: FastifyInstance) {
         type: 'object',
         additionalProperties: false,
         properties: {
-          foodItems: {
-            type: 'array',
-            minItems: 1,
-            items: { 
-              type: 'object',
-              additionalProperties: false,
-              properties: {
-                foodItemId: { type: 'integer' },
-                quantity: { type: 'integer', minimum: 1 },
-              },
-              required: ['foodItemId', 'quantity'],
-            },
-          },
+          
+          total_price: { type: 'number', minimum: 0 },
+          order_status: { type: 'string' },
         },
+        required: ['total_price', 'order_status'],
       },
       response: {
         201: {
@@ -84,7 +75,7 @@ export default async function guestOrderRoutes(fastify: FastifyInstance) {
         items: {
           type: 'object',
           properties: {
-            orderId: { type: 'integer' },
+            id: { type: 'number' },
             foodItems: {
               type: 'array',
               minItems: 1,
@@ -97,10 +88,10 @@ export default async function guestOrderRoutes(fastify: FastifyInstance) {
                 required: ['itemName', 'quantity']
               }
             },
-            totalPrice: { type: 'number', minimum: 0 },
-            orderStatus: { type: 'string' },
+            total_price: { type: 'number', minimum: 0 },
+            order_status: { type: 'string' },
           },
-          required: ['orderId', 'foodItems', 'totalPrice', 'orderStatus']
+          required: ['id', 'total_price', 'order_status']
         }
       },
         401: {

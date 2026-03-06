@@ -22,12 +22,12 @@ export const ordersTableQuery = `
 `;
 
 export const orderItemsTableQuery = `
-  CREATE TABLE IF NOT EXISTS order_items (
+  CREATE TABLE IF NOT EXISTS cart_items (
     id SERIAL PRIMARY KEY,
-    order_id INTEGER REFERENCES orders(id) ON DELETE CASCADE,
-    food_item_id INTEGER REFERENCES menu_items(id) NOT NULL,
-    quantity INTEGER NOT NULL DEFAULT 1,
-    price_at_order DECIMAL(10, 2) NOT NULL
+    user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    menu_item_id BIGINT NOT NULL REFERENCES menu_items(id) ON DELETE CASCADE,
+    quantity INT NOT NULL CHECK (quantity > 0),
+    UNIQUE (user_id, menu_item_id)
   );
 `;
 

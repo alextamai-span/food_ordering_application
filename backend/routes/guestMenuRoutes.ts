@@ -17,10 +17,11 @@ export default async function guestMenuRoutes(fastify: FastifyInstance) {
           items: {
             type: 'object',
             properties: {
+              id: { type: 'number' },
               item_name: { type: 'string' },
               price: { type: 'number', minimum: 0 },
             },
-            required: ['item_name', 'price']
+            required: ['id', 'item_name', 'price']
           },
         },
         401: {

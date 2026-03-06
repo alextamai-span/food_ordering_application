@@ -19,7 +19,7 @@ export const LoginController = {
           id: account.id,
           email: account.email
         },
-        { expiresIn: '1hr' }
+        { expiresIn: '15m' }
       );
 
       // send the token and account id back to the client (frontend - services/account.service)

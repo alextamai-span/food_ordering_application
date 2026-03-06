@@ -76,6 +76,13 @@ export default async function empMenuRoutes(fastify: FastifyInstance) {
             message: { type: 'string' },
           },
         },
+        409: {
+          type: 'object',
+          description: 'Conflict: Item already exists',
+          properties: {
+            message: { type: 'string' },
+          },
+        },
         500 :{
           type : "object",
           description : "Server error",

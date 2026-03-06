@@ -26,7 +26,7 @@ export const RegisterController = {
           id: newAccount.data.id,
           email: newAccount.data.email
         },
-        { expiresIn: '1hr' }
+        { expiresIn: '15m' }
       );
       
       return reply.status(201).send({

@@ -1,9 +1,9 @@
 // Guest menu queries
 // ------------------
 export const listGuestMenuQuery = `
-  SELECT item_name, price
+  SELECT id, item_name, price
   FROM menu_items
-  WHERE is_deleted = false
+  WHERE is_deleted = false AND quantity > 0
   ORDER BY id
 ;`;
 

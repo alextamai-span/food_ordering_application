@@ -46,14 +46,8 @@ export const EmpMenuRepository = (fastify: FastifyInstance) => ({
       return rows[0];
     }
     catch (error) {
-      // Log full error information (code/detail) then rethrow original error
-      console.error('Failed to add menu item in the DB', {
-        message: (error as any)?.message,
-        code: (error as any)?.code,
-        detail: (error as any)?.detail,
-        hint: (error as any)?.hint
-      });
-      throw error;
+      console.error('Failed to add Menu in the DB', error);
+      throw new Error('Failed to add Menu in DB');
     }
   },
 

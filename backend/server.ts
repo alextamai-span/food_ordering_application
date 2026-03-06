@@ -6,7 +6,7 @@ import {
     guestsTableQuery,
     ordersTableQuery,
     orderItemsTableQuery,
-    foodItemsTableQuery
+    foodItemsTableQuery,
 } from './db/tableQueries.js';
 
 // route imports
@@ -16,6 +16,7 @@ import guestOrderRoutes from './routes/guestOrderRoutes.ts';
 import empOrderRoutes from './routes/empOrderRoutes.ts';
 import guestMenuRoutes from './routes/guestMenuRoutes.ts';
 import empMenuRoutes from './routes/empMenuRoutes.ts';
+import cartRoutes from './routes/cartRoute.ts';
 
 const initalizeDatabase = async (fastify: any) => {
     try {
@@ -47,6 +48,7 @@ const startServer = async () => {
         // create routes
         await fastify.register(registerRoutes);
         await fastify.register(loginRoutes);
+        await fastify.register(cartRoutes, { prefix: '/cart' });
         await fastify.register(guestOrderRoutes, { prefix: '/guest/order' });
         await fastify.register(empOrderRoutes, { prefix: '/emp/order' });
         await fastify.register(guestMenuRoutes, { prefix: '/guest/menu' });

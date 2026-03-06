@@ -7,8 +7,8 @@ export const GuestOrderService = (fastify: FastifyInstance) => {
 
   return {
     // create a new order
-    async registerOrder(orderData: Omit<Order, 'id' | 'created_at' | 'completed_at'>): Promise<Order> {
-      return repo.createOrder(orderData);
+    async registerOrder(user_id: number, total_price: number, order_status: string): Promise<Order> {
+      return repo.createOrder({ user_id, total_price, order_status });
     },
 
     // listing all orders
