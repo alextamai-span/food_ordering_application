@@ -13,8 +13,6 @@ export const RegisterController = {
       const accountData = request.body as any;
       const newAccount = await service.registerAccount(accountData);
 
-      console.log(colors.red('new account'), newAccount)
-
       // Check if registration failed
       if (!newAccount.success || !newAccount.data) {
         return reply.status(409).send({ message: newAccount.message });
