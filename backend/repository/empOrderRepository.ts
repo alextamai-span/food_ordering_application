@@ -2,6 +2,7 @@ import { FastifyInstance } from 'fastify';
 import { Order } from '../models/orderModel.ts';
 import fastifyPostgres from '@fastify/postgres';
 import { createOrderQueryEmp, updateOrderQueryEmp, deleteOrderQueryEmp, orderListQueryEmp } from '../db/orderQueries.ts';
+import colors from 'console-log-colors'
 
 export const EmpOrderRepository = (fastify: FastifyInstance) => ({
   // create order
@@ -9,7 +10,7 @@ export const EmpOrderRepository = (fastify: FastifyInstance) => ({
     try {
       const { rows } = await fastify.pg.query(
         createOrderQueryEmp,
-        [orderData.guest_id, orderData.order_status, orderData.total_price]
+        [orderData.user_id, orderData.order_status, orderData.total_price]
       );
       return rows[0];
     }
@@ -25,11 +26,9 @@ export const EmpOrderRepository = (fastify: FastifyInstance) => ({
       const { rows } = await fastify.pg.query(
         updateOrderQueryEmp,
         [
-          orderData.guest_id,
+          orderId,
           orderData.order_status,
-          orderData.total_price,
-          orderData.completed_at,
-          orderId
+          orderData.completed_at
         ]
       );
       return rows[0];

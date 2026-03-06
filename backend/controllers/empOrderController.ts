@@ -1,6 +1,7 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { EmpOrderService } from '../services/empOrderService.ts';
 import { Order } from '../models/orderModel.ts';
+import colors from 'console-log-colors'
 
 // receive requests and respond to them
 export const EmpOrderController = {
@@ -26,10 +27,9 @@ export const EmpOrderController = {
     const service = EmpOrderService(request.server);
 
     try {
-      const { orderId } = request.query as { orderId: any};
+      const { id } = request.params as { id: number };
       const orderData = request.body as Order;
-
-      const updatedOrder = await service.updateOrderEmp(orderId, orderData);
+      const updatedOrder = await service.updateOrderEmp(id, orderData);
 
       return reply.status(200).send({
         message: 'Order updated successfully!',
@@ -61,8 +61,8 @@ export const EmpOrderController = {
     const service = EmpOrderService(request.server);
   
     try {
-      const { orderId } = request.query as { orderId?: any };
-      const deleted = await service.deleteOrderEmp(orderId);
+      const { id } = request.params as { id: number };
+      const deleted = await service.deleteOrderEmp(id);
 
       if (!deleted) {
         return reply.status(404).send({ message: 'Order not found' });

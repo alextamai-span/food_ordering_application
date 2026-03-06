@@ -70,13 +70,14 @@ export default async function empOrderRoutes(fastify: FastifyInstance) {
           items: {
             type: 'object',
             properties: {
-              orderId: { type: 'integer' },
-              guestId: { type: 'integer' },
-              totalPrice: { type: 'number', minimum: 0 },
-              orderStatus: { type: 'string' },
+              id: { type: 'number' },
+              user_id: { type: 'number' },
+              total_price: { type: 'number', minimum: 0 },
+              order_status: { type: 'string' },
               created_at: { type: 'string', format: 'date-time' },
               completed_at: { type: 'string', format: 'date-time' },
             },
+            required: ['id', 'user_id', 'total_price', 'order_status', 'created_at', 'completed_at']
           },
         },
         401: {
@@ -98,7 +99,7 @@ export default async function empOrderRoutes(fastify: FastifyInstance) {
   }, EmpOrderController.listOrdersEmp);
 
   // route for updating an order
-  fastify.put('/update_order:orderId', {
+  fastify.put('/update_order:id', {
     schema: {
       description: 'Updating an order',
       "tags": ["emp"],
@@ -106,18 +107,20 @@ export default async function empOrderRoutes(fastify: FastifyInstance) {
       params: {
         type: 'object',
         properties: {
-          orderId: { type: 'integer' }
+          id: { type: 'integer' }
         },
-        required: ['orderId']
+        required: ['id']
       },
       body: {
         type: 'object',
         additionalProperties: false,
         properties: {
-          orderStatus: { type: 'string' },
-          completed_at: { type: 'string', format: 'date-time' },
+          user_id: { type: 'number' },
+          total_price: { type: 'number', minimum: 0 },
+          order_status: { type: 'string' },
+          completed_at: { type: 'string' },
         },
-        required: ['orderStatus'],
+        required: ['order_status'],
       },
       response: {
         201: {
@@ -146,7 +149,7 @@ export default async function empOrderRoutes(fastify: FastifyInstance) {
   }, EmpOrderController.updateOrderEmp);
 
   // route for soft deleting an order
-  fastify.put('/delete_order:orderId', {
+  fastify.put('/delete_order:id', {
     schema: {
       description: 'Delete order',
       "tags": ["emp"],
@@ -154,9 +157,9 @@ export default async function empOrderRoutes(fastify: FastifyInstance) {
       params: {
         type: 'object',
         properties: {
-          orderId: { type: 'integer' }
+          id: { type: 'integer' }
         },
-        required: ['orderId']
+        required: ['id']
       },
       response: {
         201: {

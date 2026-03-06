@@ -8,6 +8,7 @@ import { useAuth } from '../hooks/useAuth';
 
 import AddItemPopUp from '../components/addMenuItem';
 import EditItemPopUp from '../components/editMenuItems';
+import AccountPopUp from '../components/accountPopUp';
 
 export default function EmpMenu() {
     const navigate = useNavigate();
@@ -24,6 +25,7 @@ export default function EmpMenu() {
     const [showAddItemPopUp, setShowAddItemPopUp] = useState(false);
     const [showEditItemPopUp, setshowEditItemPopUp] = useState(false);
     const [selectedItem, setSelectedItem] = useState<ItemTypes | null>(null);
+    const [showAccountPopUp, setShowAccountPopUp] = useState(false);
 
     useEffect(() => {
         if (token) {
@@ -70,10 +72,21 @@ export default function EmpMenu() {
         <>
             <header>
                 <h1>Welcome to the Food Ordering Application</h1>
+
+                <button 
+                    className="niceBtn"
+                    onClick={() => setShowAccountPopUp(true) }
+                > Account
+                </button>
             </header>
 
             <main>
                 <h2>Employee Menu</h2>
+                
+                
+                <button className="niceBtn" onClick={() => navigate("/emp/order")}>View Order</button>
+                
+                <button className="niceBtn" onClick={() => navigate("/guest/menu")}>Add Order</button>
                 
                 <button
                     className="niceBtn"
@@ -87,8 +100,6 @@ export default function EmpMenu() {
                         onNewItemAdded={handleNewItem}
                     />
                 )}
-                
-                <button className="niceBtn">View Orders</button>
 
                 <table>
                     {/* header row */}
@@ -108,7 +119,7 @@ export default function EmpMenu() {
                         items.map((item, index) => (
                         <tr key={item.id || `item-${index}`}>
                             <td>{item.item_name}</td>
-                            <td>{item.price}</td>
+                            <td>${item.price.toFixed(2)}</td>
                             <td>{item.quantity}</td>
                             <td>{item.available ? 'Yes' : 'No'}</td>
                             <td>
@@ -133,36 +144,45 @@ export default function EmpMenu() {
                         ))
                     ) : (
                         <tr>
-                            <td colSpan={4} style={{ textAlign: "center" }}>
+                            <td colSpan={5} style={{ textAlign: "center" }}>
                                 No items yet. Click "Add Item" to create one.
                             </td>
                         </tr>
-
                     )}
                     </tbody>
                 </table>
+
+
             </main>
 
-            { 
-                showEditItemPopUp &&
-                selectedItem && 
-                ( <EditItemPopUp
-                    item={selectedItem}
-                    token={token}
-                    onClose={async () => {
-                        setshowEditItemPopUp(false);
-                        setSelectedItem(null);
-                        const empMenu = await fetchEmpMenu(token);
-                        setItems(empMenu);
-                    }}
-                    onItemUpdated={(updatedItem: ItemTypes) => 
-                        setItems(prev => prev.map(
-                            item => item.id === updatedItem.id ? updatedItem : item
-                        ))
-                    }
-                    />
-                )
-            }
+            <footer>
+                { 
+                    showEditItemPopUp &&
+                    selectedItem && 
+                    ( <EditItemPopUp
+                        item={selectedItem}
+                        token={token}
+                        onClose={async () => {
+                            setshowEditItemPopUp(false);
+                            setSelectedItem(null);
+                            const empMenu = await fetchEmpMenu(token);
+                            setItems(empMenu);
+                        }}
+                        onItemUpdated={(updatedItem: ItemTypes) => 
+                            setItems(prev => prev.map(
+                                item => item.id === updatedItem.id ? updatedItem : item
+                            ))
+                        }
+                        />
+                    )
+                }
+                {
+                    showAccountPopUp &&
+                    ( <AccountPopUp
+                        onClose={() => setShowAccountPopUp(false)} />
+                    )
+                }
+            </footer>
         </>
     );
 }

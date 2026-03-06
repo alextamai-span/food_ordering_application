@@ -10,7 +10,7 @@ export const GuestOrderRepository = (fastify: FastifyInstance) => ({
       const { rows } = await fastify.pg.query(
         addOrderQueryGuest,
         [
-          data.guest_id,
+          data.user_id,
           data.total_price,
           data.order_status
         ]
@@ -24,11 +24,11 @@ export const GuestOrderRepository = (fastify: FastifyInstance) => ({
   },
 
   // listing all orders
-  async listAllOrders(guest_id: number): Promise<Order[]> {
+  async listAllOrders(user_id: number): Promise<Order[]> {
     try {
       const { rows } = await fastify.pg.query(
         orderListQueryGuest,
-        [ guest_id ]
+        [ user_id ]
       );
       
       return rows;

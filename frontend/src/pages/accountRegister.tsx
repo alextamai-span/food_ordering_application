@@ -27,6 +27,20 @@ export default function AccountRegister() {
   // Validation check
   const { validateRegisterForm } = useRegisterValidation(formData, setErrors);
 
+  // handle input change
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+
+    // Update form data
+    setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+    }));
+
+    // Validate the field immediately
+    validateRegisterForm();
+  };
+
   // Handle form submission
   const handleAccountRegister = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,6 +60,7 @@ export default function AccountRegister() {
                 // Store in Redux
                 login(
                   result.token || '',
+                  result.id || 0,
                   result.data || ''
                 );
 
@@ -91,7 +106,7 @@ export default function AccountRegister() {
                         id="name"
                         name="name"
                         value={formData.name}
-                        onChange={(e) => setFormData({...formData, name: e.target.value})}
+                        onChange={handleInputChange}
                     />
                 </div>
                 { errors.name && <p className="form-invalid">{errors.name}</p> }
@@ -103,7 +118,7 @@ export default function AccountRegister() {
                         id="email"
                         name="email"
                         value={formData.email}
-                        onChange={(e) => setFormData({...formData, email: e.target.value})}
+                        onChange={handleInputChange}
                     />
                 </div>
                 { errors.email && <p className="form-invalid">{errors.email}</p> }
@@ -115,7 +130,7 @@ export default function AccountRegister() {
                         id="password"
                         name="password"
                         value={formData.password}
-                        onChange={(e) => setFormData({...formData, password: e.target.value})}
+                        onChange={handleInputChange}
                     />
                 </div>
                 { errors.password && <p className="form-invalid">{errors.password}</p> }
@@ -126,7 +141,7 @@ export default function AccountRegister() {
                         id="account_type"
                         name="account_type"
                         value={formData.account_type}
-                        onChange={(e) => setFormData({...formData, account_type: e.target.value})}
+                        onChange={handleInputChange}
                     >
                       <option value="">Select Account Type</option>
                       <option value="guest">Guest</option>

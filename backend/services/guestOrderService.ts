@@ -12,8 +12,8 @@ export const GuestOrderService = (fastify: FastifyInstance) => {
     },
 
     // listing all orders
-    async getAllOrders(guest_id: number): Promise<Order[]> {
-      return await repo.listAllOrders(guest_id);
+    async getAllOrders(user_id: number): Promise<Order[]> {
+      return await repo.listAllOrders(user_id);
     }
   };
 };

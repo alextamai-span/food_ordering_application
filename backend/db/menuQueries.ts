@@ -3,7 +3,8 @@
 export const listGuestMenuQuery = `
   SELECT item_name, price
   FROM menu_items
-  WHERE available = true
+  WHERE is_deleted = false
+  ORDER BY id
 ;`;
 
 // Employee menu queries
@@ -30,4 +31,11 @@ export const addMenuItemQueryEmp = `
 
 export const ListMenuQueryEmp = `
   SELECT * FROM menu_items
+  ORDER BY id
+;`;
+
+export const empDataQuery = `
+  SELECT name, email, account_type
+  FROM users
+  WHERE id=$1
 ;`;

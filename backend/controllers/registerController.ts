@@ -26,11 +26,12 @@ export const RegisterController = {
           id: newAccount.data.id,
           email: newAccount.data.email
         },
-        { expiresIn: '15m' }
+        { expiresIn: '1hr' }
       );
       
       return reply.status(201).send({
         message: 'Account created successful',
+        id: newAccount.data.id,
         accountId: newAccount.data.id,
         token: token,
         account_type: newAccount.data.account_type

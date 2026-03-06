@@ -10,5 +10,6 @@ export interface ServiceResponse {
     success: boolean;
     message: string;
     token?: string;
+    id?: number;
     data?: any;
 }

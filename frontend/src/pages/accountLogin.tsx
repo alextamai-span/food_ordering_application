@@ -42,6 +42,7 @@ export default function AccountLogin() {
                 // Store in Redux
                 login(
                   result.token || '',
+                  result.id || 0,
                   result.data || ''
                 );
 

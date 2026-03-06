@@ -28,8 +28,8 @@ export const GuestOrderController = {
     const service = GuestOrderService(request.server);
 
     try {
-      const guest_id = (request.body as any).guest_id as number;
-      const rows = await service.getAllOrders(guest_id);
+      const user_id = (request.body as any).user_id as number;
+      const rows = await service.getAllOrders(user_id);
       return reply.status(200).send(rows);
     }
     catch (err: any) {

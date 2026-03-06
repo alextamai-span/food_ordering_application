@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify';
 import { Menu } from '../models/MenuModel.ts';
 import fastifyPostgres from '@fastify/postgres';
-import { updateMenuItemQueryEmp, deleteMenuItemQueryEmp, addMenuItemQueryEmp, ListMenuQueryEmp } from '../db/menuQueries.ts';
+import { updateMenuItemQueryEmp, deleteMenuItemQueryEmp, addMenuItemQueryEmp, ListMenuQueryEmp, empDataQuery } from '../db/menuQueries.ts';
 
 export const EmpMenuRepository = (fastify: FastifyInstance) => ({
   // update Menu
@@ -84,6 +84,22 @@ export const EmpMenuRepository = (fastify: FastifyInstance) => ({
     catch (error) {
       console.error('Failed to list Menu in the DB', error);
       throw new Error('Failed to list Menu in DB');
+    }
+  },
+
+  // get employee data 
+  async getEmployee(empId: number): Promise<Menu[]> {
+    try {
+      const { rows } = await fastify.pg.query(
+        empDataQuery,
+        [empId]
+      );
+      
+      return rows;
+    }
+    catch (error) {
+      console.error('Failed to get employee data in the DB', error);
+      throw new Error('Failed to get employee data in DB');
     }
   }
 });

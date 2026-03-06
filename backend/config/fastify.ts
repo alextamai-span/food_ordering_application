@@ -54,7 +54,7 @@ export const buildFastify = () => {
   fastify.register(fastifyJwt, {
     secret: env.JWT_SECRET,
     sign: {
-      expiresIn: '15m',
+      expiresIn: '1hr',
     },
   });
 

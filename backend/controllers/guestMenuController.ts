@@ -1,6 +1,6 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { GuestMenuService } from '../services/guestMenuService.ts';
-import { Account } from '../models/accountModel.ts';
+import colors from 'console-log-colors'
 
 // receive requests and respond to them
 export const GuestMenuController = {
@@ -10,7 +10,6 @@ export const GuestMenuController = {
 
     try {
       const rows = await service.getGuestMenu();
-
       return reply.status(200).send(rows);
     }
     catch (err: any) {

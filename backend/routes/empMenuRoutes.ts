@@ -137,31 +137,74 @@ export default async function empMenuRoutes(fastify: FastifyInstance) {
   }, EmpMenuController.updateMenuItemEmp);
 
   // route for deleting an item on the menu
-fastify.put('/delete_item:itemId', {
-  schema: {
-      description: 'Delete item',
+  fastify.put('/delete_item:itemId', {
+    schema: {
+        description: 'Delete item',
+        "tags": ["emp"],
+        security: [{ bearerAuth: [] }],
+        params: {
+          type: 'object',
+          properties: {
+            itemId: { type: 'integer' }
+          },
+          required: ['itemId']
+        },
+        response: {
+          201: {
+            type: 'object',
+            description: 'Item deleted successfully',
+            properties: {
+              message: { type: 'string' },
+            },
+          },
+          400: {
+            type: 'object',
+            description: 'Invalid input data',
+            properties: {
+              message: { type: 'string' },
+            },
+          },
+          500 :{
+            type : "object",
+            description : "Server error",
+            properties :{
+              message : {type : "string"}
+            }
+          }
+        }
+    }
+  }, EmpMenuController.deleteMenuItemEmp);
+
+  // route for getting employee data
+  fastify.get('/account:empId', {
+    schema: {
+      description: 'Getting the employee data',
       "tags": ["emp"],
       security: [{ bearerAuth: [] }],
       params: {
-        type: 'object',
-        properties: {
-          itemId: { type: 'integer' }
-        },
-        required: ['itemId']
+          type: 'object',
+          properties: {
+            empId: { type: 'integer' }
+          },
+          required: ['empId']
       },
       response: {
-        201: {
-          type: 'object',
-          description: 'Item deleted successfully',
-          properties: {
-            message: { type: 'string' },
+        200: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              name: { type: 'string' },
+              email: { type: 'string' },
+              account_type: { type: 'string' },
+            },
           },
         },
-        400: {
+        401: {
           type: 'object',
-          description: 'Invalid input data',
+          description: 'Unauthorized: Invalid or missing token',
           properties: {
-            message: { type: 'string' },
+              message: { type: 'string' },
           },
         },
         500 :{
@@ -173,5 +216,5 @@ fastify.put('/delete_item:itemId', {
         }
       }
     }
-  }, EmpMenuController.deleteMenuItemEmp);
+  }, EmpMenuController.listEmpData);
 };

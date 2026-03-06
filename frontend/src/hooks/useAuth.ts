@@ -18,8 +18,8 @@ export const useAuth = () => {
 
   // Wrapper function to dispatch setAuth action
   // Takes login credentials and stores them in Redux
-  const login = (token: string, account_type: string) => {
-    dispatch(setAuth({ token, account_type }));
+  const login = (token: string, id: number, account_type: string) => {
+    dispatch(setAuth({ token, id, account_type }));
   };
 
   // Wrapper function to dispatch logout action
@@ -31,6 +31,7 @@ export const useAuth = () => {
   // Return all auth data and actions for use in components
   return {
     token: auth.token,                    // JWT token (null if not logged in)
+    id: auth.id,                          // User ID
     account_type: auth.account_type,      // 'employee' or 'guest'
     success: auth.success,                // Boolean flag for logged in status
     login,                                // Action to set auth state

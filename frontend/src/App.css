@@ -230,6 +230,14 @@ th {
   border-radius: 4px;
   background-color: transparent;
   cursor: pointer;
+  float: right;
+  margin: 5px;
+}
+
+.niceBtn:hover {
+  background-color: #333;
+  color: #fff;
+  transition: all 0.3s ease;
 }
 
 .text-red {

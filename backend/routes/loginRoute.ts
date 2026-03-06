@@ -36,7 +36,8 @@ export default async function loginRoutes(fastify: FastifyInstance) {
             properties: {
               token: { type: 'string' },
               message: { type: 'string' },
-              accountId: { type: 'integer' },
+              id: { type: 'number' },
+              accountId: { type: 'number' },
               account_type: { type: 'string' }
             },
           },

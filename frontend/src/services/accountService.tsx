@@ -31,6 +31,7 @@ export const saveNewAccount = async (
       success: true,
       message: result.message || "Account created successfully!",
       token: result.token,
+      id: result.id ?? result.accountId,
       data: result.account_type,
     };
   }
@@ -66,6 +67,7 @@ export const validateLogin = async (
       success: true,
       message: result.message,
       token: result.token,
+      id: result.id ?? result.accountId,
       data: result.account_type,
     };
   }

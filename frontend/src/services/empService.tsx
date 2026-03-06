@@ -1,5 +1,5 @@
 import { ItemTypes } from "../types/menuItemTypes";
-import { ServiceResponse } from "../types/accountTypes";
+import { AccountFormData, ServiceResponse } from "../types/accountTypes";
 
 export const fetchEmpMenu = async (token: string): Promise<ItemTypes[]> => {
   try {
@@ -120,4 +120,27 @@ export const editItemInMenu = async (
             message: 'Failed to update item in menu'
         };
     }
-}
+};
+
+export const fetchUserData = async (token: string, id: number): Promise<AccountFormData[]> => {
+  try {
+    const response = await fetch(`http://localhost:5000/emp/menu/account${id}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        }
+    });
+
+    if(!response.ok) {
+        throw new Error("Failed to fetch user data");
+    }
+
+    const result = await response.json();
+    return result;
+  }
+  catch (err: any) {
+    console.error('Error getting the user data: ', err);
+    throw err;
+  }
+};

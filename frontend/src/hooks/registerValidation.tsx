@@ -43,12 +43,13 @@ export const useRegisterValidation = (
 
 
     // Password validation
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/;
     if (!data.password) {
         newErrors.password = 'Password is required.';
         hasError = true;
     }
-    else if (data.password.length < 8) {
-        newErrors.password = 'Password must be at least 8 characters long.';
+    else if (!passwordRegex.test(data.password)) {
+        newErrors.password = 'Password must be at least 8 characters, with 1 uppercase, 1 lowercase, 1 number, and 1 special character.';
         hasError = true;
     }
     else {
