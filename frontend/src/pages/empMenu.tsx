@@ -1,7 +1,7 @@
 import '../App.css'
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ItemTypes } from "../types/menuItemTypes";
-import { toast } from "react-toastify/unstyled";
+import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { fetchEmpMenu, deleteItem } from '../services/empService';
 import { useAuth } from '../hooks/useAuth';
@@ -59,9 +59,10 @@ export default function EmpMenu() {
     const handleDelete = async (id: number) => {
         try {
             await deleteItem(id, token);
+            toast.success("Item deleted");
             const empMenu = await fetchEmpMenu(token);
             setItems(empMenu);
-            toast.success("Item deleted");
+            
         }
         catch (error) {
             toast.error("Failed to delete item");

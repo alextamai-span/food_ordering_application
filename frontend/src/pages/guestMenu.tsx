@@ -1,10 +1,11 @@
 import '../App.css'
 import { useEffect, useState } from "react";
 import { ItemTypes } from "../types/menuItemTypes";
-import { toast } from "react-toastify/unstyled";
+import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from '../hooks/useAuth';
 import { fetchGuestMenu } from '../services/guestService';
+import  { addItemToCart } from '../services/cartService';
 
 import AccountPopUp from '../components/accountPopUp';
 
@@ -37,6 +38,19 @@ export default function GuestMenu() {
         }
     }, [token]);
 
+    // add item to cart
+    const handleAddItemToCart = async (menu_item_id: number) => {
+        if (token) {
+            try {
+                await addItemToCart(token, menu_item_id);
+                toast.success("Item added to cart!");
+            }
+            catch (err: any) {
+                toast.error("Failed to add item to cart.");
+            }
+        }
+    };
+
     return (
         <>
             <header>
@@ -51,7 +65,7 @@ export default function GuestMenu() {
 
             <main>
                 <h2>Guest Menu</h2>
-                <button className="niceBtn" onClick={() => navigate("/guest/cart")}>View Cart</button>
+                <button className="niceBtn" onClick={() => navigate("/cart")}>View Cart</button>
                 <button className="niceBtn" onClick={() => navigate("/guest/order")}>View Order</button>
 
                 <table>
@@ -72,7 +86,11 @@ export default function GuestMenu() {
                                 <td>{item.item_name}</td>
                                 <td>${item.price.toFixed(2)}</td>
                                 <td>
-                                    <button className="niceBtn">Add to Cart</button>
+                                    <button
+                                        className="niceBtn"
+                                        onClick={() => handleAddItemToCart(item.id)}
+                                    > Add to Cart
+                                    </button>
                                 </td>
                             </tr>
                         )) : (

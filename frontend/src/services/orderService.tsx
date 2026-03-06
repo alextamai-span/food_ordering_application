@@ -1,6 +1,44 @@
 import { OrderTypes } from "../types/orderTypes";
 import { ServiceResponse } from "../types/accountTypes";
 
+export const placeGuestOrder = async (
+    token: string,
+    userId: number,
+    totalPrice: number
+): Promise<ServiceResponse> => {
+    try {
+        const response = await fetch(`http://localhost:5000/guest/order/new_order${userId}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                total_price: totalPrice,
+                order_status: "Pending"
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to place order");
+        }
+
+        const result = await response.json();
+        return {
+            success: true,
+            message: result.message || "Order created successfully",
+            data: result.data
+        };
+    }
+    catch (err: any) {
+        console.error('Error placing guest order: ', err);
+        return {
+            success: false,
+            message: "Failed to place order"
+        };
+    }
+};
+
 // fetch all orders for the employee
 export const fetchAllOrders = async (token: string): Promise<OrderTypes[]> => {
     try {
@@ -21,6 +59,30 @@ export const fetchAllOrders = async (token: string): Promise<OrderTypes[]> => {
     }
     catch (err: any) {
         console.error('Error fetching employee orders: ', err);
+        throw err;
+    }
+};
+
+// fetch all orders for a user
+export const fetchUserOrders = async (token: string, userId: number): Promise<OrderTypes[]> => {
+    try {
+        const response = await fetch(`http://localhost:5000/guest/order/list${userId}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to fetch orders for user");
+        }
+
+        const result = await response.json();
+        return result;
+    }
+    catch (err: any) {
+        console.error('Error fetching user orders: ', err);
         throw err;
     }
 };
@@ -91,3 +153,4 @@ export const editOrderDetails = async (
         };
     }
 };
+

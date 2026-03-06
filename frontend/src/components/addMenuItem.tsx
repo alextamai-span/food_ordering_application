@@ -50,7 +50,7 @@ const addItemPopUp: React.FC<AddItemProps> = ({
                     onClose();
                 }
                 else {
-                    toast.error("Failed to add new item");
+                    toast.error(newItem.message || "Failed to add new item");
                 }
             }
             catch {

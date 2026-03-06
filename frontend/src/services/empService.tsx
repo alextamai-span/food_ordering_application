@@ -66,6 +66,12 @@ export const addItemToMenu = async (addItemData: ItemTypes, token: string): Prom
             body: JSON.stringify(addItemData)
         });
 
+        if (response.status === 409) {
+            return {
+                success: false,
+                message: 'Item name already exists. Please use a different name.'
+            };
+        }
         if(!response.ok) {
             throw new Error('Failed to add new item to menu.');
         }

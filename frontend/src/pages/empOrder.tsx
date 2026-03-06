@@ -1,7 +1,7 @@
 import '../App.css'
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { OrderTypes } from "../types/orderTypes";
-import { toast } from "react-toastify/unstyled";
+import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { fetchAllOrders, deleteOrder } from '../services/orderService';
 import { useAuth } from '../hooks/useAuth';
@@ -80,7 +80,7 @@ export default function EmpMenu() {
                             <th>Total Price</th>
                             <th>Order Status</th>
                             <th>Created At</th>
-                            <th>Completed At</th>
+                            <th>Updated At</th>
                             <th>Actions</th> 
                         </tr>
                     </thead>

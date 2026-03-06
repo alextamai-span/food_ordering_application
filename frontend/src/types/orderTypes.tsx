@@ -5,6 +5,10 @@ export interface OrderTypes {
     order_status: 'Pending' | 'Completed' | 'Cancelled';
     created_at: string | Date;
     completed_at?: string;
+    foodItems?: {
+        itemName: string;
+        quantity: number;
+    }[];
 }
 
 export interface OrderErrors {
