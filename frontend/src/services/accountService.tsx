@@ -79,3 +79,78 @@ export const validateLogin = async (
     };
   }
 };
+
+export const deleteAccountService = async (token: string, id: number): Promise<ServiceResponse> => {
+  try {
+    const response = await fetch(`http://localhost:5000/account/delete_account${id}`, {
+      method: "PUT",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      if (response.status === 400) {
+        return { success: false, message: "Invalid input data" };
+      }
+
+      if (response.status === 401) {
+        return { success: false, message: "Unauthorized: Invalid credentials" };
+      }
+
+      return { success: false, message: "Server error" };
+    }
+
+    const result = await response.json();
+
+    return {
+      success: true,
+      message: result.message || "Account deleted successfully!",
+    };
+  }
+  catch (error) {
+    console.error("Error deleting account:", error);
+    return {
+      success: false,
+      message: "Something went wrong. Please try again."
+    };
+  }
+};
+
+export const editAccountService = async (token: string, id: number, updatedData: Partial<AccountFormData>): Promise<ServiceResponse> => {
+  try {
+    const response = await fetch(`http://localhost:5000/account/update_account${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+      body: JSON.stringify(updatedData),
+    });
+
+    if (!response.ok) {
+      if (response.status === 400) {
+        return { success: false, message: "Invalid input data" };
+      }
+      if (response.status === 401) {
+        return { success: false, message: "Unauthorized: Invalid credentials" };
+      }
+      return { success: false, message: "Server error" };
+    }
+
+    const result = await response.json();
+
+    return {
+      success: true,
+      message: result.message || "Account updated successfully!",
+      data: result.data,
+    };
+  }
+  catch (error) {
+    console.error("Error editing account:", error);
+    return {
+      success: false,
+      message: "Something went wrong. Please try again."
+    };
+  }
+};

@@ -17,6 +17,7 @@ import empOrderRoutes from './routes/empOrderRoutes.ts';
 import guestMenuRoutes from './routes/guestMenuRoutes.ts';
 import empMenuRoutes from './routes/empMenuRoutes.ts';
 import cartRoutes from './routes/cartRoute.ts';
+import accountRoutes from './routes/accountRoute.ts';
 
 const initalizeDatabase = async (fastify: any) => {
     try {
@@ -48,6 +49,7 @@ const startServer = async () => {
         // create routes
         await fastify.register(registerRoutes);
         await fastify.register(loginRoutes);
+        await fastify.register(accountRoutes, { prefix: '/account' });
         await fastify.register(cartRoutes, { prefix: '/cart' });
         await fastify.register(guestOrderRoutes, { prefix: '/guest/order' });
         await fastify.register(empOrderRoutes, { prefix: '/emp/order' });
