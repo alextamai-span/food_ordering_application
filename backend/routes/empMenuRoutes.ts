@@ -113,7 +113,7 @@ export default async function empMenuRoutes(fastify: FastifyInstance) {
         properties: {
           item_name: { type: 'string' },
           price: { type: 'number', minimum: 0 },
-          quantity: { type: 'integer', minimum: 1 },
+          quantity: { type: 'integer' },
           available: { type: 'boolean' }
         },
       },

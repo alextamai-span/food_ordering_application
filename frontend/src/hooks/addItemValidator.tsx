@@ -26,12 +26,8 @@ export const addItemValidator = (data: any, setErrors: (err: any) => void) => {
         }
 
         // item quantity validator
-        if(data.quantity === 0) {
+        if(data.quantity < 0) {
             newErrors.quantity = 'Item Quantity is required.';
-            hasError = true;
-        }
-        else if(data.quantity <= 0) {
-            newErrors.quantity = 'Item Quantity is invalid.';
             hasError = true;
         }
         else {

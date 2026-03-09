@@ -69,6 +69,7 @@ const EditItemPopUp: React.FC<EditItemProps> = ({
                 <h2>Edit Item in Menu</h2>
 
                 <form id="edit-item-form" onSubmit={handleSubmit}>
+                    <label>Item Name:</label>
                     <input
                         type='text'
                         name='item_name'
@@ -81,9 +82,11 @@ const EditItemPopUp: React.FC<EditItemProps> = ({
                         </h4>
                     )}
 
+                    <label>Price:</label>
                     <input 
                         type='number'
                         name='price'
+                        step={0.01}
                         value={editItemData.price}
                         onChange={(e) => setEditItemData(prev => ({ ...prev, price: parseFloat(e.target.value) || 0 }))}
                     />
@@ -93,6 +96,7 @@ const EditItemPopUp: React.FC<EditItemProps> = ({
                         </h4>
                     )}
 
+                    <label>Quantity:</label>
                     <input 
                         type='number'
                         name='quantity'

@@ -86,15 +86,8 @@ const AccountPopUp: React.FC<AccountPopUpProps> = ({ onClose }) => {
             const editAccount = await editAccountService(token, id, editAccountData);
             console.log("Edit account response:", editAccount);
 
-            if (editAccount.success && editAccount.data) {
+            if (editAccount.success) {
                 toast.success("Account updated successfully");
-
-                if (editAccountData.account_type === "guest") {
-                    navigate("/guest/menu");
-                }
-                else if (editAccountData.account_type === "employee") {
-                    navigate("/emp/menu");
-                }
             }
             else {
                 toast.error(editAccount.message || "Failed to edit account");
@@ -111,8 +104,9 @@ const AccountPopUp: React.FC<AccountPopUpProps> = ({ onClose }) => {
                 <button className="niceBtn" onClick={onClose}>
                     Close
                 </button>
-                <h2>Account Information</h2>
+                <h2>Account {editAccountData.account_type} Information</h2>
 
+                <label>Name:   </label>
                 <input
                     type="text"
                     placeholder="Name"
@@ -120,6 +114,10 @@ const AccountPopUp: React.FC<AccountPopUpProps> = ({ onClose }) => {
                     onChange={e => setEditAccountData({ ...editAccountData, name: e.target.value })}
                 />
                 {errors.name && <p className="error">{errors.name}</p>}
+                <br></br>
+                <br></br>
+
+                <label>Email:   </label>
                 <input
                     type="text"
                     placeholder="Email"
@@ -127,16 +125,7 @@ const AccountPopUp: React.FC<AccountPopUpProps> = ({ onClose }) => {
                     onChange={e => setEditAccountData({ ...editAccountData, email: e.target.value })}
                 />
                 {errors.email && <p className="error">{errors.email}</p>}
-                <select
-                    value={editAccountData.account_type}
-                    onChange={e => setEditAccountData({ ...editAccountData, account_type: e.target.value })}
-                >
-                    <option value="">Select Account Type</option>
-                    <option value="guest">Guest</option>
-                    <option value="employee">Employee</option>
-                </select>
-                {errors.account_type && <p className="error">{errors.account_type}</p>}
-
+                <br></br>
                 <button className="niceBtn" onClick={handleLogout}>
                     Logout
                 </button>
@@ -146,7 +135,7 @@ const AccountPopUp: React.FC<AccountPopUpProps> = ({ onClose }) => {
                 </button>
 
                 <button className="niceBtn" onClick={handleEdit}>
-                    Edit Account
+                    Save Edit Account
                 </button>
             </div>
         </div>

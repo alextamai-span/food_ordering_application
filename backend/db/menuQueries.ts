@@ -18,7 +18,7 @@ export const updateMenuItemQueryEmp = `
 
 export const deleteMenuItemQueryEmp = `
   UPDATE menu_items
-  SET price = 0.00, quantity = 0, available = false, is_deleted = true
+  SET available = false, is_deleted = true
   WHERE id = $1
   RETURNING *
 ;`;
