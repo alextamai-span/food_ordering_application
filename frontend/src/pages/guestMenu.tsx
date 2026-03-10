@@ -11,7 +11,7 @@ import AccountPopUp from '../components/accountPopUp';
 
 export default function GuestMenu() {
     const navigate = useNavigate();
-    const { token } = useAuth();
+    const { token, account_type } = useAuth();
 
     // Redirect if no token
     useEffect(() => {
@@ -103,6 +103,11 @@ export default function GuestMenu() {
                     }
                     </tbody>
                 </table>
+
+                <br></br>
+                {account_type === 'employee' && (
+                    <button className="niceBtn" onClick={() => navigate('/emp/menu')}>Return to Employee Account</button>
+                )}
             </main>
 
             <footer>

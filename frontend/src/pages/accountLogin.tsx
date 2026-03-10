@@ -24,6 +24,11 @@ export default function AccountLogin() {
   // Validation check
   const { validateLoginForm } = useLoginValidation(formData, setErrors);
 
+  // removes leading/trailing spaces and collapses multiple spaces into one
+  const cleanTextInput = (value: string) => {
+    return value.replace(/\s+/g, ' ').trimStart();
+  };
+
   // Auto-validate after first submit when user edits fields
   useEffect(() => {
     if (hasSubmitted) {
@@ -100,7 +105,7 @@ export default function AccountLogin() {
                         type="text"
                         name="email"
                         value={formData.email}
-                        onChange={(e) => setFormData({...formData, email: e.target.value})}
+                        onChange={(e) => setFormData({...formData, email: cleanTextInput(e.target.value)})}
                     />
                 </div>
                 { errors.email && <p className="form-invalid">{errors.email}</p> }
@@ -112,7 +117,7 @@ export default function AccountLogin() {
                         id="password"
                         name="password"
                         value={formData.password}
-                        onChange={(e) => setFormData({...formData, password: e.target.value})}
+                        onChange={(e) => setFormData({...formData, password: cleanTextInput(e.target.value)})}
                     />
                 </div>
                 { errors.password && <p className="form-invalid">{errors.password}</p> }

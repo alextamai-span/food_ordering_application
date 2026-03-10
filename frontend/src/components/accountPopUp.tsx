@@ -75,6 +75,11 @@ const AccountPopUp: React.FC<AccountPopUpProps> = ({ onClose }) => {
         }
     }
 
+    // removes leading/trailing spaces and collapses multiple spaces into one
+    const cleanTextInput = (value: string) => {
+        return value.replace(/\s+/g, ' ').trimStart();
+    };
+
     const handleEdit = async () => {
         const hasErrors = validateAccountForm();
         if (hasErrors) {
@@ -111,7 +116,7 @@ const AccountPopUp: React.FC<AccountPopUpProps> = ({ onClose }) => {
                     type="text"
                     placeholder="Name"
                     value={editAccountData.name}
-                    onChange={e => setEditAccountData({ ...editAccountData, name: e.target.value })}
+                    onChange={e => setEditAccountData({ ...editAccountData, name: cleanTextInput(e.target.value) })}
                 />
                 {errors.name && <p className="error">{errors.name}</p>}
                 <br></br>
@@ -122,7 +127,7 @@ const AccountPopUp: React.FC<AccountPopUpProps> = ({ onClose }) => {
                     type="text"
                     placeholder="Email"
                     value={editAccountData.email}
-                    onChange={e => setEditAccountData({ ...editAccountData, email: e.target.value })}
+                    onChange={e => setEditAccountData({ ...editAccountData, email: cleanTextInput(e.target.value) })}
                 />
                 {errors.email && <p className="error">{errors.email}</p>}
                 <br></br>

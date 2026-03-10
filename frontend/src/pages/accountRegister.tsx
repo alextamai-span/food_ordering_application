@@ -34,7 +34,12 @@ export default function AccountRegister() {
       validateRegisterForm();
     }
   }, [formData, hasSubmitted, validateRegisterForm]);
-  
+
+  // removes leading/trailing spaces and collapses multiple spaces into one
+  const cleanTextInput = (value: string) => {
+    return value.replace(/\s+/g, ' ').trimStart();
+  };
+
   // Handle form submission
   const handleAccountRegister = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -102,7 +107,7 @@ export default function AccountRegister() {
                         id="name"
                         name="name"
                         value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        onChange={(e) => setFormData({ ...formData, name: cleanTextInput(e.target.value) })}
                     />
                 </div>
                 { errors.name && <p className="form-invalid">{errors.name}</p> }
@@ -114,7 +119,7 @@ export default function AccountRegister() {
                         id="email"
                         name="email"
                         value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        onChange={(e) => setFormData({ ...formData, email: cleanTextInput(e.target.value) })}
                     />
                 </div>
                 { errors.email && <p className="form-invalid">{errors.email}</p> }
@@ -126,7 +131,7 @@ export default function AccountRegister() {
                         id="password"
                         name="password"
                         value={formData.password}
-                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                        onChange={(e) => setFormData({ ...formData, password: cleanTextInput(e.target.value) })}
                     />
                 </div>
                 { errors.password && <p className="form-invalid">{errors.password}</p> }

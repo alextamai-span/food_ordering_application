@@ -34,6 +34,11 @@ const addItemPopUp: React.FC<AddItemProps> = ({
 
     const { validateAddItem } = addItemValidator(newItemData, setErrors);
 
+    // removes leading/trailing spaces and collapses multiple spaces into one
+    const cleanTextInput = (value: string) => {
+        return value.replace(/\s+/g, ' ').trimStart();
+    };
+
     // submit for a new item
     const handleSubmit = async (e: any) =>{
         e.preventDefault();
@@ -74,7 +79,7 @@ const addItemPopUp: React.FC<AddItemProps> = ({
                         type='text'
                         name='item_name'
                         value={newItemData.item_name}
-                        onChange={(e) => setNewItemData(prev => ({ ...prev, item_name: e.target.value }))}
+                        onChange={(e) => setNewItemData(prev => ({ ...prev, item_name: cleanTextInput(e.target.value) }))}
                     />
                     { errors.item_name && (
                         <h4 className='form-invalid'>

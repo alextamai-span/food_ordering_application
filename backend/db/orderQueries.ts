@@ -37,6 +37,7 @@ export const deleteOrderQueryEmp = `
 
 export const orderListQueryEmp = `
   SELECT * FROM orders
+  WHERE order_status != 'deleted'
   ORDER BY id;
 `;
   
