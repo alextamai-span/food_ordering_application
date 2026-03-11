@@ -4,22 +4,31 @@ import { toast } from 'react-toastify';
 import { OrderTypes } from '../types/orderTypes';
 import { editOrderDetails } from '../services/orderService';
 
+// props for the edit order pop up component
 interface EditOrderProps {
+    // order that will be edited
     order: OrderTypes;
+    // closes the pop up
     onClose: () => void;
+    // function to update the orders that passes the edited order
     onOrderUpdated: (order: OrderTypes) => void;
+    // token for authentication
     token: string;
-}
+};
 
+// pop up for editing an order
 const EditOrderPopUp: React.FC<EditOrderProps> = ({
     order,
     onClose,
     onOrderUpdated,
     token
 }) => {
+    // state for the edited order data
     const [editOrderData, setEditOrderData] = useState<OrderTypes>({ ...order });
 
+    // submit edit order form
     const handleSubmit = async (e: React.FormEvent) => {
+        // prevent default form submission behavior
         e.preventDefault();
 
         try {
