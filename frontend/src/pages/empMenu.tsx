@@ -84,16 +84,9 @@ export default function EmpMenu() {
             <main>
                 <h2>Employee Menu</h2>
                 
-                
                 <button className="niceBtn" onClick={() => navigate("/emp/order")}>View Order</button>
-                
                 <button className="niceBtn" onClick={() => navigate("/guest/menu")}>Add Order</button>
-                
-                <button
-                    className="niceBtn"
-                    onClick={() => setShowAddItemPopUp(true)}
-                > Add Item  
-                </button>
+                <button className="niceBtn" onClick={() => setShowAddItemPopUp(true)}> Add Item</button>
                 { showAddItemPopUp && (
                     <AddItemPopUp
                         token={token}

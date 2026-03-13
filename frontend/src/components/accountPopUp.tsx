@@ -108,6 +108,10 @@ const AccountPopUp: React.FC<AccountPopUpProps> = ({
 
     // handle edit account button click
     const handleEdit = async () => {
+        // ---------------------------------------------------
+        // validation for onClick as well 
+        // ---------------------------------------------------
+
         // validate the edit account form: name and email
         const hasErrors = validateAccountForm();
 
@@ -156,6 +160,10 @@ const AccountPopUp: React.FC<AccountPopUpProps> = ({
     const handleAccountInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         // get the name and value of the input 
         const { name, value } = e.target;
+
+        // ---------------------------------------------------
+        // need to have validation for onChange as well 
+        // ---------------------------------------------------
         
         // update the local state for allow for editing account information
         setEditAccountData((prev) => ({
@@ -186,7 +194,7 @@ const AccountPopUp: React.FC<AccountPopUpProps> = ({
                     onChange={handleAccountInputChange}
                 />
                 {/* error message for name */}
-                {errors.name && <p className="error">{errors.name}</p>}
+                {errors.name && <p className="form-invalid">{errors.name}</p>}
 
                 <br></br>
                 <br></br>
@@ -201,7 +209,7 @@ const AccountPopUp: React.FC<AccountPopUpProps> = ({
                     onChange={handleAccountInputChange}
                 />
                 {/* error message for email */}
-                {errors.email && <p className="error">{errors.email}</p>}
+                {errors.email && <p className="form-invalid">{errors.email}</p>}
 
                 <br></br>
                 

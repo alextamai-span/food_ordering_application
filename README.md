@@ -42,3 +42,14 @@ When a user logs in, the frontend verifies that both the email and password fiel
 Validation is also applied when employees manage menu items. Fields such as the item name, price, and quantity must contain valid values before the form can be submitted.
 
 For the cart and checkout process, the frontend ensures that item quantities are valid (for example, not less than one) and that the cart contains items before allowing the user to proceed with checkout.
+
+## Dependencies
+
+These are packages we need when running the project:
+- react – core UI library
+- react-dom – React renderer for browsers
+- react-router-dom – routing system
+- @reduxjs/toolkit – Redux state management
+- react-redux – connect React to Redux
+- react-toastify – toast notifications
+
