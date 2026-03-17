@@ -6,10 +6,15 @@ import swagger from '@fastify/swagger';
 import swaggerUI from '@fastify/swagger-ui';
 import { env } from './env';
 
+/*
+  Builds and configures the Fastify server instance.
+  Registers all required plugins: Swagger docs, PostgreSQL, CORS, JWT,
+  and decorates the instance with an authentication guard.
+*/
 export const buildFastify = () => {
   const fastify = Fastify({ logger: true });
 
-  // register Swagger/OpenAPI first so schemas from later routes are collected
+  // Register Swagger/OpenAPI first so route schemas are collected before the UI is served
   fastify.register(swagger, {
     openapi: {
       info: {
@@ -20,6 +25,7 @@ export const buildFastify = () => {
       servers: [{ url: `http://localhost:${env.PORT}` }],
       components: {
         securitySchemes: {
+          // All protected routes expect a Bearer JWT in the Authorization header
           bearerAuth: {
             type: 'http',
             scheme: 'bearer',
@@ -31,6 +37,7 @@ export const buildFastify = () => {
     },
   });
 
+  // Swagger UI documentation
   fastify.register(swaggerUI, {
     routePrefix: '/documentation',
     uiConfig: {
@@ -41,16 +48,19 @@ export const buildFastify = () => {
     transformStaticCSP: (header) => header,
   });
 
+  // Connect to PostgreSQL 
   fastify.register(fastifyPostgres, {
     connectionString: env.DATABASE_URL,
   });
 
+  // what HTTP requests methods are allowed by frontend
   fastify.register(fastifyCors, {
     origin: env.FRONTEND_URL,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
   });
 
-  // JWT config
+  // Register JWT plugin
+  // tokens use the secret and expire after 15 minutes
   fastify.register(fastifyJwt, {
     secret: env.JWT_SECRET,
     sign: {
@@ -58,13 +68,14 @@ export const buildFastify = () => {
     },
   });
 
-  // Auth guard
+  // authenticate hook added as a preHandler on protected routes
   fastify.decorate('authenticate', async (request: any, reply: any) => {
     try {
-      // return the user data
+      // Verify the JWT and attach the decoded payload to request.user
       await request.jwtVerify();
     }
     catch {
+      // Return 401 if the token is missing, expired, or invalid
       reply.code(401).send({ message: 'Unauthorized' });
     }
   });
