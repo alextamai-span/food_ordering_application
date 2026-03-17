@@ -111,9 +111,9 @@ Soft-delete is used on `users`, `menu_items`, and `orders` — records are flagg
 |---|---|---|
 | View available menu items | Yes | Yes |
 | Add / edit / delete menu items | No | Yes |
-| Add items to cart | Yes | No |
+| Add items to cart | Yes | Yes |
 | Place orders | Yes | Yes |
-| View own orders | Yes | — |
+| View own orders | Yes | Yes |
 | View & manage all orders | No | Yes |
 | Manage account | Yes | Yes |
 
