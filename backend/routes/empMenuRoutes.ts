@@ -181,47 +181,4 @@ export default async function empMenuRoutes(fastify: FastifyInstance) {
         }
     }
   }, EmpMenuController.deleteMenuItemEmp);
-
-  // route for getting employee data
-  fastify.get('/account:empId', {
-    schema: {
-      description: 'Getting the employee data',
-      "tags": ["emp"],
-      security: [{ bearerAuth: [] }],
-      params: {
-          type: 'object',
-          properties: {
-            empId: { type: 'integer' }
-          },
-          required: ['empId']
-      },
-      response: {
-        200: {
-          type: 'array',
-          items: {
-            type: 'object',
-            properties: {
-              name: { type: 'string' },
-              email: { type: 'string' },
-              account_type: { type: 'string' },
-            },
-          },
-        },
-        401: {
-          type: 'object',
-          description: 'Unauthorized: Invalid or missing token',
-          properties: {
-              message: { type: 'string' },
-          },
-        },
-        500 :{
-          type : "object",
-          description : "Server error",
-          properties :{
-            message : {type : "string"}
-          }
-        }
-      }
-    }
-  }, EmpMenuController.listEmpData);
 };

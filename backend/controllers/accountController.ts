@@ -51,5 +51,26 @@ export const AccountController = {
         message: 'Account Update Failed'
       });
     }
+  },
+
+  // get employee data
+  async getAccount(request: FastifyRequest, reply: FastifyReply) {
+    const service = AccountService(request.server);
+
+    try {
+      const { empId } = request.params as { empId: number };
+
+      if (!empId) {
+        return reply.status(400).send({ message: 'empId is required' });
+      }
+
+      const user = await service.getEmployee(empId);
+
+      return reply.status(200).send(user);
+    }
+    catch (err: any) {
+      request.log.error(err);
+      return reply.status(500).send({ message: 'Error retrieving Employee data' });
+    }
   }
 };

@@ -26,6 +26,17 @@ export const AccountService = (fastify: FastifyInstance) => {
       }
 
       return account;
+    },
+
+    // get employee data
+    async getEmployee(empId: number) {
+      const data = await repo.getEmployee(empId);
+
+      if (!data.length) {
+        throw new Error('Employee not found');
+      }
+
+      return data;
     }
   };
 };

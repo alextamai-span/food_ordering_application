@@ -33,9 +33,3 @@ export const ListMenuQueryEmp = `
   SELECT * FROM menu_items
   ORDER BY id
 ;`;
-
-export const empDataQuery = `
-  SELECT name, email, account_type
-  FROM users
-  WHERE id=$1
-;`;

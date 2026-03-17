@@ -1,6 +1,6 @@
 import { FastifyInstance } from 'fastify';
 import fastifyPostgres from '@fastify/postgres';
-import { softDeleteAccountQuery, updateAccountQuery } from '../db/accountQueries.ts';
+import { softDeleteAccountQuery, updateAccountQuery, empDataQuery } from '../db/accountQueries.ts';
 import { Account } from '../models/accountModel.ts';
 
 export const AccountRepository = (fastify: FastifyInstance) => ({
@@ -23,5 +23,15 @@ export const AccountRepository = (fastify: FastifyInstance) => ({
         );
 
         return rows[0];
+    },
+
+    // get employee data
+    async getEmployee(empId: number) {
+        const { rows } = await fastify.pg.query(
+            empDataQuery,
+            [empId]
+        );
+
+        return rows;
     }
 });

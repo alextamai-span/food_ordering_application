@@ -1,7 +1,6 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { EmpMenuService } from '../services/empMenuService.ts';
 import { Menu } from '../models/MenuModel.ts';
-import { Account } from '../models/accountModel.ts';
 import colors from 'console-log-colors'
 
 // receive requests and respond to them
@@ -89,27 +88,6 @@ export const EmpMenuController = {
     catch (err: any) {
       request.log.error(err);
       return reply.status(500).send({ message: 'Failed to delete Menu' });
-    }
-  },
-
-  // list employee data
-  async listEmpData(request: FastifyRequest, reply: FastifyReply) {
-    const service = EmpMenuService(request.server);
-
-    try {
-      const { empId } = request.params as { empId: number };
-
-      if (!empId) {
-        return reply.status(400).send({ message: 'empId is required' });
-      }
-
-      const user = await service.getEmpData(empId);
-      
-      return reply.status(200).send(user);
-    }
-    catch (err: any) {
-      request.log.error(err);
-      return reply.status(500).send({ message: 'Error retrieving Employee data' });
     }
   },
 

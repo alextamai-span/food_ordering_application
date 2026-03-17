@@ -11,3 +11,9 @@ export const updateAccountQuery = `
   WHERE id = $4 AND is_deleted = FALSE
   RETURNING *;
 `;
+
+export const empDataQuery = `
+  SELECT name, email, account_type
+  FROM users
+  WHERE id=$1
+;`;

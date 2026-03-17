@@ -21,7 +21,10 @@ export default async function cartRoutes(fastify: FastifyInstance) {
   }, CartController.addItem);
 
   fastify.get("/list", {
-    schema: { security: [{ bearerAuth: [] }], tags: ["cart"] }
+    schema: { 
+      security: [{ bearerAuth: [] }],
+      tags: ["cart"]
+    }
   }, CartController.list);
 
   fastify.put("/update_quantity:menuItemId", {
