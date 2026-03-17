@@ -1,55 +1,172 @@
-# Food Ordering Applicaiton
+# Food Ordering Application
 
-This is a full stack food ordering project that uses React, NodeJS, PostgreSQL, and Fastify. It includes:
-1. Both a frontend and backend.
-2. JWT authentication.
-3. Redux for state management.
-4. Proper validation (frontend + backend).
-5. PostgreSQL transactions where required.
+A full-stack food ordering system built with **React**, **Fastify**, **TypeScript**, and **PostgreSQL**. Supports two user roles — **Guest** and **Employee** — with JWT authentication, role-based routing, menu management, a shopping cart, and order tracking.
 
-# Database Design 
+> See [`backend/README.md`](backend/README.md) and [`frontend/README.md`](frontend/README.md) for detailed per-layer documentation.
 
-There are 4 tables
-1. users - tracks the account that have been created
-2. menu_items - tracks the items
-3. orders - tracks orders that have been made
-4. cart_items - tracks what items the user has entered into their cart
+---
 
-# Authentication & JWT
+## Tech Stack
 
-The first step for a new user is to create an account which is one method to getting a JWT authentication token. The other method is for an existing your to log in to their account. When creating a new account, the password is encrypted using bcrypt before it gets stored in the database. As well, the JWT authentication token is automatically generated. When logging in, the entered password is compared with the stored hashed password using bcrypt to verify that it matches. If the credentials are valid, a JWT authentication token is generated and returned to the user. 
+| | Frontend | Backend |
+|---|---|---|
+| Language | TypeScript 5 | TypeScript 5 (Node.js + `tsx`) |
+| Framework | React 19 + Vite 7 | Fastify 5 |
+| State | Redux Toolkit + React-Redux | — |
+| Routing | React Router DOM 7 | — |
+| Database | — | PostgreSQL (raw SQL via `@fastify/postgres`) |
+| Auth | JWT stored in Redux | `@fastify/jwt` — 15 min TTL |
+| Password | — | bcrypt (10 salt rounds) |
+| API Docs | — | Swagger / OpenAPI at `/documentation` |
+| Notifications | React Toastify | — |
 
-The JWT authentication token is then sent to the frontend service and stored in the Redux store. As long as the token is valid and has not expired, it is included with HTTP requests to the backend. Before processing each request, the backend validates the JWT token to ensure the user is authenticated and authorized to access the requested resources.
+---
 
-# Food & Order APIs
+## Getting Started
 
-For both account types, once a user successfully logs in, the menu is automatically displayed.
+### Prerequisites
+- Node.js
+- PostgreSQL running locally
 
-Employees have full management access to the menu. They are able to add, edit, and delete menu items. This allows them to maintain and update the list of available food items.
+### Run the backend
 
-Guests have view-only access to the menu. They can browse the available items and add them to their cart, but they cannot modify the menu itself.
+```bash
+cd backend
+npm install
+npm run dev        # watch mode
+# or
+npm start          # production
+```
 
-The cart tracks all items that the user has added. Users can update the quantity of items in their cart, remove individual items, or clear the entire cart.
+Server: **http://localhost:5000**
+API docs: **http://localhost:5000/documentation**
 
-When the user is ready to complete their purchase, they can checkout. During checkout, a unique order number is generated and the total price is calculated. The items currently in the cart are then saved to the orders table in the database as a completed order.
+### Run the frontend
 
-# Frontend Validation
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
-While creating a new account, the frontend validates that all required fields are filled in correctly. This includes checking that the email address follows a valid format, the password meets minimum security requirements, and that required fields are not left empty.
+App: **http://localhost:5173**
 
-When a user logs in, the frontend verifies that both the email and password fields are provided before submitting the request to the authentication API.
+---
 
-Validation is also applied when employees manage menu items. Fields such as the item name, price, and quantity must contain valid values before the form can be submitted.
+## Project Structure
 
-For the cart and checkout process, the frontend ensures that item quantities are valid (for example, not less than one) and that the cart contains items before allowing the user to proceed with checkout.
+```
+food_ordering_application/
+├── backend/
+│   ├── config/         # Fastify setup, env vars, JWT type declarations
+│   ├── controllers/    # HTTP request/response handlers
+│   ├── services/       # Business logic
+│   ├── repository/     # Data access layer (SQL queries)
+│   ├── db/             # Raw parameterised SQL strings
+│   ├── models/         # TypeScript interfaces
+│   ├── routes/         # Route definitions with schema validation
+│   ├── middleware/      # JWT authentication preHandler
+│   ├── utils/          # Shared utilities (password hashing)
+│   └── server.ts       # Entry point
+└── frontend/
+    └── src/
+        ├── pages/      # Full-page route components
+        ├── components/ # Reusable modal/popup components
+        ├── services/   # API call functions (one file per feature)
+        ├── hooks/      # Form validation + auth hooks
+        ├── contexts/   # Redux store and auth slice
+        └── types/      # TypeScript interfaces
+```
 
-## Dependencies
+---
 
-These are packages we need when running the project:
-- react – core UI library
-- react-dom – React renderer for browsers
-- react-router-dom – routing system
-- @reduxjs/toolkit – Redux state management
-- react-redux – connect React to Redux
-- react-toastify – toast notifications
+## Database Schema
+
+Four tables are created automatically on startup:
+
+| Table | Key Columns |
+|---|---|
+| `users` | `id`, `name`, `email`, `password`, `account_type` (`guest` \| `employee`), `created_at`, `is_deleted` |
+| `menu_items` | `id`, `item_name`, `price`, `quantity`, `available`, `is_deleted` |
+| `orders` | `id`, `user_id` (FK), `total_price`, `order_status`, `created_at`, `completed_at` |
+| `cart_items` | `id`, `user_id` (FK), `menu_item_id` (FK), `quantity` — unique per `(user_id, menu_item_id)` |
+
+Soft-delete is used on `users`, `menu_items`, and `orders` — records are flagged rather than removed.
+
+---
+
+## Authentication & JWT
+
+1. A new user registers at `POST /register` — password is hashed with bcrypt before storage and a JWT is returned
+2. An existing user logs in at `POST /login` — bcrypt compares the entered password against the stored hash; a JWT is returned on success
+3. The frontend stores the token in Redux (`authSlice`) and includes it as `Authorization: Bearer <token>` on every subsequent request
+4. The backend's `verifyJWT` middleware validates the token's signature and expiry (15 min) before processing any protected route
+5. On failure the backend returns `401 Unauthorized`
+
+---
+
+## Role-Based Access
+
+| Feature | Guest | Employee |
+|---|---|---|
+| View available menu items | Yes | Yes |
+| Add / edit / delete menu items | No | Yes |
+| Add items to cart | Yes | No |
+| Place orders | Yes | Yes |
+| View own orders | Yes | — |
+| View & manage all orders | No | Yes |
+| Manage account | Yes | Yes |
+
+After login, users are automatically routed to `/guest/menu` or `/emp/menu` based on their `account_type`.
+
+---
+
+## API Endpoints (summary)
+
+All routes except `/register` and `/login` require `Authorization: Bearer <token>`.
+
+| Group | Method | Path |
+|---|---|---|
+| Auth | `POST` | `/register`, `/login` |
+| Account | `GET PUT` | `/account/get_account/:id`, `/account/update_account/:id`, `/account/delete_account/:id` |
+| Guest Menu | `GET` | `/guest/menu/list` |
+| Emp Menu | `GET POST PUT DELETE` | `/emp/menu/list`, `/emp/menu/add_item`, `/emp/menu/update_item/:id`, `/emp/menu/delete_item/:id` |
+| Guest Orders | `POST GET` | `/guest/order/new_order/:userId`, `/guest/order/list/:userId` |
+| Emp Orders | `POST GET PUT DELETE` | `/emp/order/new_order`, `/emp/order/list`, `/emp/order/update_order/:id`, `/emp/order/delete_order/:id` |
+| Cart | `POST GET PUT DELETE` | `/cart/add_item`, `/cart/list`, `/cart/update_quantity/:id`, `/cart/remove_item/:id`, `/cart/clear`, `/cart/after_checkout_menu` |
+
+---
+
+## Checkout Flow
+
+1. User adds items to cart
+2. On checkout, `POST /guest/order/new_order/:userId` creates the order with total price
+3. `PUT /cart/after_checkout_menu` decrements inventory for each ordered item
+4. `DELETE /cart/clear` empties the cart
+5. User is redirected to `/guest/order` to view the confirmed order
+
+---
+
+## Frontend Validation
+
+Validation runs client-side before any API call is made. Errors are shown only after the first submit attempt.
+
+| Form | Rules |
+|---|---|
+| Register | Name (letters/hyphens/apostrophes); valid email; password requires uppercase, lowercase, digit, and special character |
+| Login | Valid email format; password ≥ 8 characters |
+| Account edit | Name and email format; account type required |
+| Add / edit menu item | Item name required; price > 0; quantity ≥ 0; availability required |
+
+---
+
+## Backend Architecture
+
+Requests flow through a strict layered pattern:
+
+```
+Route → Controller → Service → Repository → DB (raw SQL)
+```
+
+Each layer has a single responsibility: routes define schema and security, controllers handle HTTP, services contain business logic, repositories run queries, and the DB layer holds the SQL strings.
 
